@@ -74,6 +74,9 @@ public class Usuario implements Serializable {
 	 @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	 private List<Lance> lances;
 	 
+	 @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	 private List<Anuncio> anuncios;
+	 
 	 @ManyToMany(mappedBy = "usuarios")
 	    private List<Categoria> categorias;
 	 
