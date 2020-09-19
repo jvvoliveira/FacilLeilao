@@ -10,14 +10,24 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
+@NamedQueries(value = { @NamedQuery(name = "Usuario.findByEmailSenha",
+query = "SELECT c FROM Usuario c "
+                   + "WHERE c.email = :email AND c.senha = :senha")})
+
 @Table(name = "TB_USUARIO")
 public class Usuario implements Serializable {
+	
+	@Transient
+    public static final String FIND_BY_EMAIL_SENHA = "Usuario.findByEmailSenha";
 
 	@Id
 	@Column(name = "ID")
@@ -44,7 +54,7 @@ public class Usuario implements Serializable {
     private boolean isActive;
     
 	@NotNull(message = "Senha do usuário não pode ser nula")
-	@Size(min = 6, max = 20, message = "Quantidade incorreta de dígitos na senha do usuário")
+	@Size(min = 6, message = "Quantidade incorreta de dígitos na senha do usuário")
     @Column(name = "SENHA")
     private String senha;
     
