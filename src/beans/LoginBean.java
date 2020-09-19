@@ -4,6 +4,10 @@ import entidades.Usuario;
 import servico.UsuarioServico;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.annotation.PostConstruct;
@@ -40,5 +44,4 @@ public class LoginBean implements Serializable{
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-	
 }
