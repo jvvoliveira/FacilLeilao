@@ -17,6 +17,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "TB_ANUNCIO")
 public class Anuncio implements Serializable{
 	
+	
 	@Id
 	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
