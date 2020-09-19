@@ -13,14 +13,25 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
+@NamedQueries(value = { @NamedQuery(name = "Usuario.findByEmailSenha",
+query = "SELECT c FROM Usuario c "
+                   + "WHERE c.email = :email AND c.senha = :senha")})
+
 @Table(name = "TB_USUARIO")
 public class Usuario implements Serializable {
+	
+	@Transient
+    public static final String FIND_BY_EMAIL_SENHA = "Usuario.findByEmailSenha";
 
 	@Id
 	@Column(name = "ID")
@@ -29,6 +40,7 @@ public class Usuario implements Serializable {
 	
 	@NotNull(message = "Email do usuário não pode ser nulo")
     @Size(max = 100, message = "Caracteres a mais no email do usuário")
+	@Email(message = "Email inválido")
     @Column(name = "EMAIL")
     private String email;
     
@@ -38,7 +50,7 @@ public class Usuario implements Serializable {
     private String nome;
     
 	@NotNull(message = "Telefone do usuário não pode ser nulo")
-    @Size(min = 8, max = 13 ,message = "Quantidade incorreta de dígitos no telefone do usuário")
+    @Size(min = 8, max = 16, message = "Quantidade incorreta de dígitos no telefone do usuário")
     @Column(name = "TELEFONE")
     private String telefone;
     
@@ -47,7 +59,7 @@ public class Usuario implements Serializable {
     private boolean isActive;
     
 	@NotNull(message = "Senha do usuário não pode ser nula")
-	@Size(min = 6, max = 20, message = "Quantidade incorreta de dígitos na senha do usuário")
+	@Size(min = 6, message = "Quantidade incorreta de dígitos na senha do usuário")
     @Column(name = "SENHA")
     private String senha;
     

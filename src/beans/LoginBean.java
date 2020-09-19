@@ -4,6 +4,10 @@ import entidades.Usuario;
 import servico.UsuarioServico;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.annotation.PostConstruct;
@@ -12,7 +16,7 @@ import javax.ejb.EJB;
 
 @ManagedBean
 @SessionScoped
-public class UsuarioBean implements Serializable{
+public class LoginBean implements Serializable{
 
 	/**
 	 * 
@@ -29,10 +33,10 @@ public class UsuarioBean implements Serializable{
         usuario = new Usuario();
     }
 	
-    public void salvar(){
-        usuarioServico.salvarUsuario(this.usuario);
-        this.usuario = new Usuario();
+    public void login(){
+    	
     }
+    
 
 	public Usuario getUsuario() {
 		return usuario;
@@ -41,6 +45,5 @@ public class UsuarioBean implements Serializable{
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-	
-	
+
 }
