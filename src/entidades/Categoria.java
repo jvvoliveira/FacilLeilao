@@ -2,12 +2,19 @@ package entidades;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,6 +35,16 @@ public class Categoria implements Serializable{
     @Column(name = "NOME")
     private String nome;
 
+	 @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	 private List<Anuncio> anuncios;
+	 
+	 @ManyToMany(fetch = FetchType.LAZY)
+	    @JoinTable(name = "CATEGORIA_USUARIO", joinColumns = {
+	        @JoinColumn(name = "ID_CATEGORIA")},
+	            inverseJoinColumns = {@JoinColumn(name = "ID_USUARIO")}
+	         )
+	    private List<Usuario> usuarios;
+	 
 	
 	public Categoria() {
 
@@ -48,6 +65,18 @@ public class Categoria implements Serializable{
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	
+
+	public List<Anuncio> getAnuncios() {
+		return anuncios;
+	}
+
+	public void setAnuncios(List<Anuncio> anuncios) {
+		this.anuncios = anuncios;
+	}
+	
+	
+	
 
 	@Override
 	public int hashCode() {

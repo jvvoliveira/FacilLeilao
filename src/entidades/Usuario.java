@@ -10,6 +10,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -48,8 +51,13 @@ public class Usuario implements Serializable {
     @Column(name = "SENHA")
     private String senha;
     
-	
-
+	 @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	 private List<Lance> lances;
+	 
+	 @ManyToMany(mappedBy = "usuarios")
+	    private List<Categoria> categorias;
+	 
+	 
 	public Usuario() {
 		super();
 		// TODO Auto-generated constructor stub
