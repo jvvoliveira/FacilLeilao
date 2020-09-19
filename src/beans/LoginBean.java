@@ -36,6 +36,7 @@ public class LoginBean implements Serializable{
     public void login(){
     	
     }
+    
 
 	public Usuario getUsuario() {
 		return usuario;
@@ -44,4 +45,5 @@ public class LoginBean implements Serializable{
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
+
 }
