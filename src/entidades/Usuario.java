@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -26,6 +27,7 @@ public class Usuario implements Serializable {
 	
 	@NotNull(message = "Email do usuário não pode ser nulo")
     @Size(max = 100, message = "Caracteres a mais no email do usuário")
+	@Email(message = "Email inválido")
     @Column(name = "EMAIL")
     private String email;
     
@@ -35,7 +37,7 @@ public class Usuario implements Serializable {
     private String nome;
     
 	@NotNull(message = "Telefone do usuário não pode ser nulo")
-    @Size(min = 8, max = 13 ,message = "Quantidade incorreta de dígitos no telefone do usuário")
+    @Size(min = 8, max = 16, message = "Quantidade incorreta de dígitos no telefone do usuário")
     @Column(name = "TELEFONE")
     private String telefone;
     
@@ -43,8 +45,8 @@ public class Usuario implements Serializable {
     @Column(name = "IS_ACTIVE")
     private boolean isActive;
     
-	@NotNull(message = "Senha do usuário não pode ser nula")
 	@Size(min = 6, max = 20, message = "Quantidade incorreta de dígitos na senha do usuário")
+	@NotNull(message = "Senha do usuário não pode ser nula")
     @Column(name = "SENHA")
     private String senha;
     
