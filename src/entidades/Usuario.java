@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -72,7 +73,43 @@ public class Usuario implements Serializable {
 	 @ManyToMany(mappedBy = "usuarios")
 	    private List<Categoria> categorias;
 	 
+	 @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	 @JoinColumn(name = "GRUPO_ID", referencedColumnName = "ID")
+	 private Grupo grupo;
 	 
+	 
+	public List<Lance> getLances() {
+		return lances;
+	}
+
+	public void setLances(List<Lance> lances) {
+		this.lances = lances;
+	}
+
+	public List<Anuncio> getAnuncios() {
+		return anuncios;
+	}
+
+	public void setAnuncios(List<Anuncio> anuncios) {
+		this.anuncios = anuncios;
+	}
+
+	public List<Categoria> getCategorias() {
+		return categorias;
+	}
+
+	public void setCategorias(List<Categoria> categorias) {
+		this.categorias = categorias;
+	}
+
+	public Grupo getGrupo() {
+		return grupo;
+	}
+
+	public void setGrupo(Grupo grupo) {
+		this.grupo = grupo;
+	}
+
 	public Usuario() {
 		super();
 		// TODO Auto-generated constructor stub

@@ -1,5 +1,6 @@
 package beans;
 
+import entidades.Grupo;
 import entidades.Usuario;
 import servico.UsuarioServico;
 
@@ -38,7 +39,12 @@ public class CadastroBean implements Serializable{
     public void salvar(){
     	FacesContext context = FacesContext.getCurrentInstance();
     	try {
+    		Grupo grupoUsuario = new Grupo();
+    		grupoUsuario.setNome(Grupo.USUARIO);
+    		this.usuario.setGrupo(grupoUsuario);
+    		
     		this.usuario.setSenha(convertStringToMd5(usuario.getSenha()));
+    		
     		usuarioServico.salvarUsuario(this.usuario);
     		context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuário cadastrado com sucesso!", null));
     		this.usuario = new Usuario();    		
