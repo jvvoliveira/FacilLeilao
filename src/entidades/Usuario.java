@@ -24,15 +24,23 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@NamedQueries(value = { @NamedQuery(name = "Usuario.findByEmailSenha",
-query = "SELECT c FROM Usuario c "
-                   + "WHERE c.email = :email AND c.senha = :senha")})
+@NamedQueries({ 
+	
+		@NamedQuery(
+			name = "Usuario.findByEmailSenha",
+			query = "SELECT c FROM Usuario c WHERE c.email = :email AND c.senha = :senha"),
+		@NamedQuery(
+				name = "Usuario.PorId",
+				query = "SELECT c FROM Usuario c WHERE c.id = :id")
+})
 
 @Table(name = "TB_USUARIO")
 public class Usuario implements Serializable {
 	
 	@Transient
     public static final String FIND_BY_EMAIL_SENHA = "Usuario.findByEmailSenha";
+	@Transient
+    public static final String POR_ID = "Usuario.PorId";
 
 	@Id
 	@Column(name = "ID")
