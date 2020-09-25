@@ -7,8 +7,10 @@
 	<title>leilao facil</title>
 </h:head>
 <h:body>
+
+
 	<h:form id="cadastroForm">
-		<p:messages id="messages" />
+		<p:messages id="messages" closable="true"/>
 		<p:panel>
 			<p:panelGrid columns="2">
 			
@@ -20,10 +22,19 @@
 					
 			</p:panelGrid>
 			
-			<p:commandButton value="Login" ajax="false" action="#{loginBean.login()}" />
+			<p:commandButton value="Login" action="#{loginBean.login()}"  />
 				
 		</p:panel>
 	</h:form>
+
+	 
+	<!-- 
+	<form method="POST" action="j_security_check">
+		<input type="text" name="j_username" />
+		<input type="password" name="j_password" />
+		<input type="submit" value="Enter" />
+	</form>
+	 -->
 	<p:commandLink value="Fazer cadastro" action="cadastro" immediate="true"/>
 </h:body>
 </html>
