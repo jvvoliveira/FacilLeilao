@@ -15,6 +15,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -48,8 +49,11 @@ public class LoginBean implements Serializable{
         FacesContext context = FacesContext.getCurrentInstance();
     	try {
     		((HttpServletRequest) context.getExternalContext().getRequest()).login(this.usuario.getEmail(), this.usuario.getSenha());
-    		context.getExternalContext().getSession(true);
-//    		context.getCurrentInstance()
+    		
+    		Usuario usuarioLogado = usuarioServico.getUsuarioByEmail(this.usuario.getEmail());
+    		
+    		HttpSession session = (HttpSession) context.getExternalContext().getSession(true);
+    		session.setAttribute("usuario", usuarioLogado);
     		return "home";
     	}catch(Exception e) {
     		this.usuario = new Usuario();

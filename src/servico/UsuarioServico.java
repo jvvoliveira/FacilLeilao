@@ -28,4 +28,10 @@ public class UsuarioServico {
 	public void salvarGrupoUsuario(Grupo grupoUsuario) {
 		entityManager.persist(grupoUsuario);
 	}
+	
+	public Usuario getUsuarioByEmail(String email) {
+		TypedQuery<Usuario> query = (TypedQuery<Usuario>) entityManager.createNamedQuery(Usuario.POR_EMAIL);
+		query.setParameter("email", email);
+		return query.getSingleResult();
+	}
 }

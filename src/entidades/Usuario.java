@@ -31,7 +31,10 @@ import javax.validation.constraints.Size;
 			query = "SELECT c FROM Usuario c WHERE c.email = :email AND c.senha = :senha"),
 		@NamedQuery(
 				name = "Usuario.PorId",
-				query = "SELECT c FROM Usuario c WHERE c.id = :id")
+				query = "SELECT c FROM Usuario c WHERE c.id = :id"),
+		@NamedQuery(
+				name = "Usuario.PorEmail",
+				query = "SELECT c FROM Usuario c WHERE c.email = :email")
 })
 
 @Table(name = "TB_USUARIO")
@@ -41,6 +44,8 @@ public class Usuario implements Serializable {
     public static final String FIND_BY_EMAIL_SENHA = "Usuario.findByEmailSenha";
 	@Transient
     public static final String POR_ID = "Usuario.PorId";
+	@Transient
+    public static final String POR_EMAIL = "Usuario.PorEmail";
 
 	@Id
 	@Column(name = "ID")

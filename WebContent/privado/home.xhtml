@@ -19,7 +19,16 @@
 		    <p:menuitem value="Perfil" icon="pi pi-file">
 		        <f:param name="i" value="2" />
 		    </p:menuitem>
+		    
+		   <!--  <p:menuitem value="Logout" icon="pi pi-times" style="float:right;" >
+		   		<p:commandButton value="Logout" action="#{leilaoBean.logout()}" ajax="false"/>	
+		   </p:menuitem> -->
 		</p:tabMenu>
+		<h:outputText value="Bem vindo #{leilaoBean.usuario.nome}" />
+		<br/>
+		<h:outputText value="Seu email: #{leilaoBean.usuario.email}" />
+		<br/>
+		<h:outputText value="Seu telefone: #{leilaoBean.usuario.telefone}" />
 	</h:form>
 </h:body>
 </html>
