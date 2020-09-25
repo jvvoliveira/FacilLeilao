@@ -41,7 +41,8 @@ public class CadastroBean implements Serializable{
     	try {
     		Grupo grupoUsuario = new Grupo();
     		grupoUsuario.setNome(Grupo.USUARIO);
-    		this.usuario.setGrupo(grupoUsuario);
+    		grupoUsuario.setEmail(usuario.getEmail());
+    		usuarioServico.salvarGrupoUsuario(grupoUsuario);
     		
     		this.usuario.setSenha(convertStringToMd5(usuario.getSenha()));
     		

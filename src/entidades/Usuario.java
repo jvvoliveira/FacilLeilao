@@ -81,10 +81,6 @@ public class Usuario implements Serializable {
 	 @ManyToMany(mappedBy = "usuarios")
 	    private List<Categoria> categorias;
 	 
-	 @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	 @JoinColumn(name = "GRUPO_ID", referencedColumnName = "ID")
-	 private Grupo grupo;
-	 
 	 
 	public List<Lance> getLances() {
 		return lances;
@@ -108,14 +104,6 @@ public class Usuario implements Serializable {
 
 	public void setCategorias(List<Categoria> categorias) {
 		this.categorias = categorias;
-	}
-
-	public Grupo getGrupo() {
-		return grupo;
-	}
-
-	public void setGrupo(Grupo grupo) {
-		this.grupo = grupo;
 	}
 
 	public Usuario() {
@@ -171,6 +159,7 @@ public class Usuario implements Serializable {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
+	
 
 	@Override
 	public int hashCode() {

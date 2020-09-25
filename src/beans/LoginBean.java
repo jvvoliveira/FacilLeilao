@@ -20,10 +20,10 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 
 
-//@ManagedBean
-//@SessionScoped
-@RequestScoped
-@Named
+@ManagedBean
+@SessionScoped
+//@RequestScoped
+//@Named
 public class LoginBean implements Serializable{
 
 	/**
@@ -31,11 +31,11 @@ public class LoginBean implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 
-//	@EJB
-	@Inject
+	@EJB
+//	@Inject
 	private UsuarioServico usuarioServico;
 	
-//	private FacesContext facesContext;
+//	private FacesContext context;
 	
 	private Usuario usuario;
 	
@@ -44,26 +44,18 @@ public class LoginBean implements Serializable{
         usuario = new Usuario();
     }
 	
-//	private HttpServletRequest getRequest() {
-//        return (HttpServletRequest) facesContext.getExternalContext().getRequest();
-//    }
-	
     public String login(){
-    	FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext context = FacesContext.getCurrentInstance();
     	try {
-    		String senhaMD5 = convertStringToMd5(this.usuario.getSenha());
-    		System.out.println("xxxxxxxxxxx   "+senhaMD5+"   xxxxxxxx");
-    		((HttpServletRequest) context.getExternalContext().getRequest()).login(this.usuario.getEmail(), senhaMD5);
+    		((HttpServletRequest) context.getExternalContext().getRequest()).login(this.usuario.getEmail(), this.usuario.getSenha());
     		context.getExternalContext().getSession(true);
-//    		getRequest().login(this.usuario.getEmail(), senhaMD5);
-//    		facesContext.getExternalContext().getSession(true);
-//    		context.getExternalContext().redirect("faces/privado/home.xhtml");
+//    		context.getCurrentInstance()
     		return "home";
     	}catch(Exception e) {
     		this.usuario = new Usuario();
     		context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Senha e/ou email incorretos", null));
     		e.printStackTrace();
-    		return "erro";
+    		return null;
     	}
     }
     

@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import entidades.Grupo;
 import entidades.Usuario;
 
 @Stateless
@@ -22,5 +23,9 @@ public class UsuarioServico {
 	
 	public void salvarUsuario(Usuario usuario) {
 		entityManager.persist(usuario);
+	}
+	
+	public void salvarGrupoUsuario(Grupo grupoUsuario) {
+		entityManager.persist(grupoUsuario);
 	}
 }

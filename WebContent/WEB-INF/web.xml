@@ -11,6 +11,11 @@
         </form-login-config>
    </login-config>
    
+   <security-role>
+        <description/>
+        <role-name>usuario</role-name>
+   </security-role>
+   
    <security-constraint>
    	<web-resource-collection>
    		<web-resource-name>Private Area</web-resource-name>
