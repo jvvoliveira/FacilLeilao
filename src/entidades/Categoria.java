@@ -14,17 +14,27 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
+@NamedQueries({
+	@NamedQuery(name = "Categoria.findAll", 
+			query = "SELECT c FROM Categoria c")
+})
 @Table(name = "TB_CATEGORIA")
 public class Categoria implements Serializable{
 
+	@Transient
+    public static final String FIND_ALL = "Categoria.findAll";
+	
 	@Id
 	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

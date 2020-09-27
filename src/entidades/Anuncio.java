@@ -14,62 +14,74 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@NamedQueries({
+		@NamedQuery(name = "Anuncio.findAll", 
+				query = "SELECT a FROM Anuncio a WHERE a.finalizado = 'false'"),
+		@NamedQuery(name = "Anuncio.findByCategoria", 
+		query = "SELECT a FROM Anuncio a WHERE a.categoria.nome = :categoria")
+})
 @Table(name = "TB_ANUNCIO")
-public class Anuncio implements Serializable{
+public class Anuncio implements Serializable {
 	
-	
+	@Transient
+    public static final String FIND_ALL_OPEN = "Anuncio.findAll";
+	@Transient
+    public static final String FIND_BY_CATEGORIA = "Anuncio.findByCategoria";
+
 	@Id
 	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;
-    
-    @Column(name = "NOME")
-    @NotNull
-    private String nome;
-    
-    @Column(name = "DESCRICAO")
-    @NotNull
-    private String descricao;
-    
-    @Column(name = "VALOR_BASE")
-    @NotNull
-    private float valorBase;
-    
-    @Column(name = "IS_ACTIVE")
-    @NotNull
-    private boolean isActive;
-    
-    @Column(name = "PRAZO")
-    @NotNull
-    @Temporal(TemporalType.DATE)
-    private Date prazo;
-    
-    @Column(name = "FINALIZADO")
-    @NotNull
-    private String finalizado;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "ID_CATEGORIA", referencedColumnName = "ID")
-    private Categoria categoria;
-    
-    @OneToMany(mappedBy = "anuncio", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@Column(name = "NOME")
+	@NotNull
+	private String nome;
+
+	@Column(name = "DESCRICAO")
+	@NotNull
+	private String descricao;
+
+	@Column(name = "VALOR_BASE")
+	@NotNull
+	private float valorBase;
+
+	@Column(name = "IS_ACTIVE")
+	@NotNull
+	private boolean isActive;
+
+	@Column(name = "PRAZO")
+	@NotNull
+	private String prazo;
+
+	@Column(name = "FINALIZADO")
+	@NotNull
+	private String finalizado;
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "ID_CATEGORIA", referencedColumnName = "ID")
+	private Categoria categoria;
+
+	@OneToMany(mappedBy = "anuncio", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Lance> lances;
-    
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID")
-    private Usuario usuario;
-    
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID")
+	private Usuario usuario;
+
 	public Anuncio() {
 	}
 
-	public Anuncio(Long id, String nome, String descricao, float valorBase, boolean isActive, Date prazo,
+	public Anuncio(Long id, String nome, String descricao, float valorBase, boolean isActive, String prazo,
 			String finalizado) {
 		super();
 		this.id = id;
@@ -121,11 +133,11 @@ public class Anuncio implements Serializable{
 		this.isActive = isActive;
 	}
 
-	public Date getPrazo() {
+	public String getPrazo() {
 		return prazo;
 	}
 
-	public void setPrazo(Date prazo) {
+	public void setPrazo(String prazo) {
 		this.prazo = prazo;
 	}
 
@@ -137,7 +149,6 @@ public class Anuncio implements Serializable{
 		this.finalizado = finalizado;
 	}
 
-	
 	public Categoria getCategoria() {
 		return categoria;
 	}
@@ -170,8 +181,5 @@ public class Anuncio implements Serializable{
 			return false;
 		return true;
 	}
-    
-    
-    
-    
+
 }
