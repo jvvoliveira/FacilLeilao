@@ -7,28 +7,99 @@
 	<title>leilao facil</title>
 </h:head>
 <h:body>
-	<h:form>
+	<h:form id="form">
 		<p:tabMenu activeIndex="0">
-		    <p:menuitem value="Leilões" icon="pi pi-search">
-		        <f:param name="i" value="0" />
-		    </p:menuitem>
-		    <p:menuitem value="Seus anúncios" icon="pi pi-star">
-		        <f:param name="i" value="1" />
-		    </p:menuitem>
-		    <!-- outcome -->
-		    <p:menuitem value="Perfil" icon="pi pi-file">
-		        <f:param name="i" value="2" />
-		    </p:menuitem>
-		    
-		   <!--  <p:menuitem value="Logout" icon="pi pi-times" style="float:right;" >
-		   		<p:commandButton value="Logout" action="#{leilaoBean.logout()}" ajax="false"/>	
-		   </p:menuitem> -->
+			<p:menuitem value="Leilões" icon="pi pi-search">
+				<f:param name="i" value="0" />
+			</p:menuitem>
+			<p:menuitem value="Seus anúncios" icon="pi pi-star">
+				<f:param name="i" value="1" />
+			</p:menuitem>
+			<!-- outcome -->
+
+			<p:menuitem value="#{leilaoBean.usuario.nome}">
+			</p:menuitem>
 		</p:tabMenu>
-		<h:outputText value="Bem vindo #{leilaoBean.usuario.nome}" />
-		<br/>
-		<h:outputText value="Seu email: #{leilaoBean.usuario.email}" />
-		<br/>
-		<h:outputText value="Seu telefone: #{leilaoBean.usuario.telefone}" />
+
+		<p:dataList value="#{leilaoBean.categorias}" var="categoria"
+			styleClass="listCategorias">
+			<p:commandButton value="#{categoria.nome}"
+				action="#{leilaoBean.filtrarAnunciosPorCategoria(categoria.nome)}"
+				ajax="true" update=":form:anuncios" />
+		</p:dataList>
+		<p:commandButton value="Remover Filtro"
+			action="#{leilaoBean.todosAnunciosDisponiveis()}" ajax="true"
+			update=":form:anuncios" />
+
+		<p:dataGrid var="anuncio" value="#{leilaoBean.anunciosDisponiveis}"
+			columns="3" layout="grid" rows="12" paginator="true" id="anuncios"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="6,12,16">
+
+			<f:facet name="header">
+            	Leilões em andamento
+        	</f:facet>
+
+			<p:panel header="#{anuncio.nome}" style="text-align:center">
+				<h:panelGrid columns="1" style="width:100%">
+					<!-- <p:graphicImage name="demo/images/car/#{car.brand}.gif" /> -->
+
+					<h:outputText value="lance: R$#{anuncio.valorBase}" />
+					<br />
+					<h:outputText value="#{anuncio.prazo}" />
+
+					<!-- update=":form:anuncioDetalhe"
+						oncomplete="PF('anuncioDialog').show()" -->
+					<p:commandLink update=":form:anuncioDetalhe"
+						oncomplete="PF('anuncioDialog').show()">
+						<h:outputText value="Ver detalhes" style="margin:0 auto;" />
+						<f:setPropertyActionListener value="#{anuncio}"
+							target="#{leilaoBean.anuncioSelecionado}" />
+					</p:commandLink>
+				</h:panelGrid>
+			</p:panel>
+		</p:dataGrid>
+
+		<p:dialog header="Detalhes" widgetVar="anuncioDialog" modal="true"
+			showEffect="fade" hideEffect="fade" resizable="false">
+			<p:outputPanel id="anuncioDetalhe" style="text-align:center;">
+				<p:panelGrid columns="2"
+					rendered="#{not empty leilaoBean.anuncioSelecionado}"
+					columnClasses="label,value">
+					<f:facet name="header">
+						<!-- <p:graphicImage
+									name="demo/images/car/#{dataGridView.selectedCar.brand}-big.gif" /> -->
+					</f:facet>
+
+					<h:outputText value="Produto:" />
+					<h:outputText value="#{leilaoBean.anuncioSelecionado.nome}" />
+
+					<h:outputText value="Categoria:" />
+					<h:outputText
+						value="#{leilaoBean.anuncioSelecionado.categoria.nome}" />
+
+					<h:outputText value="Descrição:" />
+					<h:outputText value="#{leilaoBean.anuncioSelecionado.descricao}" />
+
+					<h:outputText value="Prazo:" />
+					<h:outputText value="#{leilaoBean.anuncioSelecionado.prazo}" />
+
+					<h:outputText value="Lance atual:" />
+					<h:outputText value="#{leilaoBean.anuncioSelecionado.valorBase}" />
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:dialog>
+
 	</h:form>
 </h:body>
+<style>
+.listCategorias .ui-widget-content {
+	border: none;
+}
+
+.listCategorias .ui-datalist-data {
+	padding: 0;
+	display: flex;
+}
+</style>
 </html>
