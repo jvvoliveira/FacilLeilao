@@ -57,7 +57,10 @@ public class LeilaoBean implements Serializable{
 		for(int i = 0; i < anuncios.size(); i++) {
 			LocalDateTime dateTime = LocalDateTime.parse(anuncios.get(i).getPrazo());
 			if(dateTime.isAfter(LocalDateTime.now())) {
-				anuncios.get(i).setPrazo(dateTime.toString());
+				String textoPrazo = dateTime.toString().replace('-', '/');
+				textoPrazo = textoPrazo.replace('T', ' ');
+				
+				anuncios.get(i).setPrazo(textoPrazo);
 				anunciosDisponiveis.add(anuncios.get(i));
 			}
 		}
