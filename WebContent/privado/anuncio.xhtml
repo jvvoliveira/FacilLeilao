@@ -17,15 +17,15 @@
 					label="nome" />
 
 				<p:outputLabel for="descricao" value="Informe sua descricão:" />
-				<p:inputText id="descricao" value="#{anuncioBean.anuncio.email}" required="true"
+				<p:inputText id="descricao" value="#{anuncioBean.anuncio.descricao}" required="true"
 					label="descricao" />
 
 				<p:outputLabel for="valor_base" value="Informe o valor:" />
-				<p:inputMask id="valor_base" value="#{anuncioBean.anuncio.telefone}" mask="#.##0,00" required="true"
+				<p:inputMask id="valor_base" value="#{anuncioBean.anuncio.valor_base}" mask="#.##0,00" required="true"
 					 label="valor_base" />
 
 				<p:outputLabel for="prazo" value="Informe o prazo:" />
-				<p:password id="prazo" value="#{anuncioBean.anuncio.senha}" required="true"
+				<p:password id="prazo" value="#{anuncioBean.anuncio.prazo}" required="true"
 					label="prazo" />
 					
 			</p:panelGrid>
