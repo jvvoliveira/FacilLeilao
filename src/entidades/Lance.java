@@ -11,14 +11,25 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@NamedQueries({ 
+	@NamedQuery(
+		name = "Lance.findLancesByAnuncio",
+		query = "SELECT l FROM Lance l WHERE l.anuncio.id = :idAnuncio")
+})
 @Table(name = "TB_LANCE")
 public class Lance implements Serializable{
+	
+	@Transient
+    public static final String FIND_LANCE_BY_ANUNCIO = "Lance.findLancesByAnuncio";
 	
 	@Id
 	@Column(name = "ID")
@@ -79,6 +90,25 @@ public class Lance implements Serializable{
 		this.direto = direto;
 	}
 
+
+	public Anuncio getAnuncio() {
+		return anuncio;
+	}
+
+
+	public void setAnuncio(Anuncio anuncio) {
+		this.anuncio = anuncio;
+	}
+
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
 
 
 	@Override

@@ -2,10 +2,13 @@ package servico;
 
 import static javax.persistence.PersistenceContextType.TRANSACTION;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import entidades.Lance;
 
@@ -18,6 +21,12 @@ public class LanceServico {
 	
 	public void salvarLance(Lance lance) {
 		entityManager.persist(lance);
+	}
+	
+	public List<Lance> getLancesByAnuncio(float idAnuncio) {
+		TypedQuery<Lance> query = (TypedQuery<Lance>) entityManager.createNamedQuery(Lance.FIND_LANCE_BY_ANUNCIO);
+		query.setParameter("idAnuncio", idAnuncio);
+		return query.getResultList();
 	}
 	
 }
