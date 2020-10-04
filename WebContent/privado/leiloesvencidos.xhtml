@@ -1,0 +1,73 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<style type="text/css">
+.listCategorias .ui-widget-content {
+	border: none;
+}
+
+.listCategorias .ui-datalist-data {
+	padding: 0;
+	display: flex;
+}
+</style>
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>leilao facil</title>
+</h:head>
+<h:body>
+	<h:form id="form">
+		<p:tabMenu activeIndex="2">
+			<p:menuitem value="Leilões" icon="pi pi-search" outcome="/privado/home.xhtml">
+				<f:param name="i" value="0" />
+			</p:menuitem>
+			<p:menuitem value="Seus anúncios" icon="pi pi-star">
+				<f:param name="i" value="1" />
+			</p:menuitem>
+			<p:menuitem value="Leilões vencidos" icon="pi pi-star">
+				<f:param name="i" value="2" />
+			</p:menuitem>
+			<!-- outcome -->
+
+			<p:menuitem value="#{leilaoBean.usuario.nome}">
+			</p:menuitem>
+		</p:tabMenu>
+		
+
+			<p:commandButton value="Atualizar"
+				action="#{leilaoBean.filtrarLeiloesVencidos()}"
+				ajax="true" update=":form:anuncios" />
+
+
+		<p:dataGrid var="anuncio" value="#{leilaoBean.leiloesVencidos}"
+			columns="3" layout="grid" rows="12" paginator="true" id="anuncios"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="6,12,16">
+
+			<f:facet name="header">
+            	Leilões Vencidos
+        	</f:facet>
+        	
+    
+			<p:panel header="#{anuncio.nome}" style="text-align:center">
+				<h:panelGrid columns="1" style="width:100%">
+					<!-- <p:graphicImage name="demo/images/car/#{car.brand}.gif" /> -->
+
+					<h:outputText value="Produto: #{anuncio.nome}" />
+
+					<h:outputText value="Nome do vendedor: #{anuncio.usuario.nome}" />
+
+					<h:outputText value="Email do vendedor: #{anuncio.usuario.email}" />
+
+					<h:outputText value="Telefone do vendedor: #{anuncio.usuario.telefone}" />
+
+					<h:outputText value="Valor do lançe: #{leilaoBean.getMaiorLance(anuncio).getValor()}" />
+
+				</h:panelGrid>
+			</p:panel>
+		</p:dataGrid>
+
+	</h:form>
+</h:body>
+</html>

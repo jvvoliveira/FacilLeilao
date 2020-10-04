@@ -37,10 +37,13 @@ public class LeilaoBean implements Serializable{
 	
 	private List<Anuncio> anunciosDisponiveis;
 	
+	private List<Anuncio> leiloesVencidos;
+	
 	private List<Categoria> categorias;
 	
 	private Anuncio anuncioSelecionado;
 	private Lance maiorLanceAnuncioSelecionado;
+	
 	
 	private Usuario usuario;
 	
@@ -52,6 +55,7 @@ public class LeilaoBean implements Serializable{
 		
 		todosAnunciosDisponiveis();
 		setCategorias(categoriaServico.getCategorias());
+		filtrarLeiloesVencidos();
     }
 	
 	public void todosAnunciosDisponiveis() {
@@ -72,6 +76,23 @@ public class LeilaoBean implements Serializable{
 			}
 		}
 		setAnunciosDisponiveis(anunciosDisponiveis);
+	}
+	
+	
+	private List<Anuncio> filtrarAnunciosFinalizados(List<Anuncio> anuncios) {
+		List<Anuncio> anunciosFinalizados = new ArrayList<Anuncio>();
+		
+		for(int i = 0; i < anuncios.size(); i++) {
+			Anuncio anuncio = anuncios.get(i);
+			LocalDateTime dateTime = LocalDateTime.parse(anuncios.get(i).getPrazo());
+			if(dateTime.isBefore(LocalDateTime.now())) {
+				String textoPrazo = dateTime.toString().replace('-', '/');
+				textoPrazo = textoPrazo.replace('T', ' ');
+				anuncio.setPrazo(textoPrazo);
+				anunciosFinalizados.add(anuncio);
+			}
+		}
+		return anunciosFinalizados;
 	}
 	
 	public void filtrarAnunciosPorCategoria(String categoria) {
@@ -97,6 +118,27 @@ public class LeilaoBean implements Serializable{
 		}catch(Exception e) {
 			e.printStackTrace();
 			return null;
+		}
+	}
+	
+	
+	public void filtrarLeiloesVencidos() {
+		Lance maiorLance = new Lance();
+		try {
+			List<Anuncio> anunciosVencidos = new ArrayList<Anuncio>();;
+			List<Anuncio> anuncios = filtrarAnunciosFinalizados(anuncioServico.getAnunciosByUsuario(usuario.getId()));
+			System.out.println("passou aqui");
+			for(int i = 0; i < anuncios.size(); i++) {
+				maiorLance = getMaiorLance(anuncios.get(i));
+				if(maiorLance.getUsuario().getId() == usuario.getId()) {
+					anunciosVencidos.add(anuncios.get(i));
+					System.out.println(anuncios.get(i));
+				}
+			}
+			setLeiloesVencidos(anunciosVencidos);;			
+		}catch(Exception e) {
+			e.printStackTrace();
+			return;
 		}
 	}
 	
@@ -136,17 +178,28 @@ public class LeilaoBean implements Serializable{
 	public Usuario getUsuario() {
 		return usuario;
 	}
-
+	
+	
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-
+	
 	public List<Anuncio> getAnunciosDisponiveis() {
 		return anunciosDisponiveis;
 	}
 
 	public void setAnunciosDisponiveis(List<Anuncio> anunciosDisponiveis) {
 		this.anunciosDisponiveis = anunciosDisponiveis;
+	}
+	
+	
+
+	public void setLeiloesVencidos(List<Anuncio> leiloesVencidos) {
+		this.leiloesVencidos = leiloesVencidos;
+	}
+	
+	public List<Anuncio> getLeiloesVencidos() {
+		return leiloesVencidos;
 	}
 
 	public Anuncio getAnuncioSelecionado() {

@@ -5,3 +5,8 @@
 .project
 
 /target
+/bin/
+
+*.db
+
+/build/
