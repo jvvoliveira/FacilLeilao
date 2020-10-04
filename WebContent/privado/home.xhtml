@@ -14,7 +14,7 @@
 </style>
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>leilao facil</title>
+	<title>Leilão Fácil</title>
 </h:head>
 <h:body>
 	<h:form id="form">
@@ -22,11 +22,9 @@
 			<p:menuitem value="Leilões" icon="pi pi-search">
 				<f:param name="i" value="0" />
 			</p:menuitem>
-			<p:menuitem value="Seus anúncios" icon="pi pi-star">
+			<p:menuitem value="Seus anúncios" outcome="/privado/anuncio.xhtml" icon="pi pi-star">
 				<f:param name="i" value="1" />
 			</p:menuitem>
-			<!-- outcome -->
-
 			<p:menuitem value="#{leilaoBean.usuario.nome}">
 			</p:menuitem>
 		</p:tabMenu>

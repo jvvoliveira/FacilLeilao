@@ -65,9 +65,9 @@ public class Anuncio implements Serializable {
 
 	@Column(name = "FINALIZADO")
 	@NotNull
-	private String finalizado;
+	private boolean finalizado;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = true)
 	@JoinColumn(name = "ID_CATEGORIA", referencedColumnName = "ID")
 	private Categoria categoria;
 
@@ -82,7 +82,7 @@ public class Anuncio implements Serializable {
 	}
 
 	public Anuncio(Long id, String nome, String descricao, float valorBase, boolean isActive, String prazo,
-			String finalizado) {
+			boolean finalizado) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -141,11 +141,11 @@ public class Anuncio implements Serializable {
 		this.prazo = prazo;
 	}
 
-	public String getFinalizado() {
+	public boolean getFinalizado() {
 		return finalizado;
 	}
 
-	public void setFinalizado(String finalizado) {
+	public void setFinalizado(boolean finalizado) {
 		this.finalizado = finalizado;
 	}
 
@@ -156,6 +156,15 @@ public class Anuncio implements Serializable {
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+	
 
 	@Override
 	public int hashCode() {
@@ -180,6 +189,11 @@ public class Anuncio implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+	
+	@Override
+	public String toString() {
+	    return String.format("%s[id=%d]", getClass().getSimpleName(), getId());
 	}
 
 }
