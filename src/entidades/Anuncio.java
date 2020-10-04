@@ -28,7 +28,10 @@ import javax.validation.constraints.NotNull;
 		@NamedQuery(name = "Anuncio.findAll", 
 				query = "SELECT a FROM Anuncio a WHERE a.finalizado = 'false'"),
 		@NamedQuery(name = "Anuncio.findByCategoria", 
-		query = "SELECT a FROM Anuncio a WHERE a.categoria.nome = :categoria")
+		query = "SELECT a FROM Anuncio a WHERE a.categoria.nome = :categoria"),
+		@NamedQuery(name = "Anuncio.findByUsuario", 
+		query = "SELECT a FROM Anuncio a INNER JOIN Lance l ON l.anuncio.id = a.id and l.usuario.id = :usuarioid "
+				+ "GROUP BY a.id")	
 })
 @Table(name = "TB_ANUNCIO")
 public class Anuncio implements Serializable {
@@ -37,7 +40,9 @@ public class Anuncio implements Serializable {
     public static final String FIND_ALL_OPEN = "Anuncio.findAll";
 	@Transient
     public static final String FIND_BY_CATEGORIA = "Anuncio.findByCategoria";
-
+	@Transient
+    public static final String FIND_BY_USUARIO = "Anuncio.findByUsuario";
+	
 	@Id
 	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -155,6 +160,24 @@ public class Anuncio implements Serializable {
 
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
+	}
+	
+	
+
+	public List<Lance> getLances() {
+		return lances;
+	}
+
+	public void setLances(List<Lance> lances) {
+		this.lances = lances;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	public Usuario getUsuario() {

@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf16004685674810" configfile="/FacilLeilao/WebContent/WEB-INF/faces-config.xml">
-  <nodes xsi:type="pageflow:PFPage" name="*" x="122" y="562" id="pf16005243737210" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf16005243737211 pf16005294905663 pf16015191980470 pf16015191980471" path="*"/>
-  <nodes xsi:type="pageflow:PFPage" name="publico/cadastro.xhtml" x="338" y="178" id="pf16005243737212" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf16005243737211" path="/publico/cadastro.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="publico/login.xhtml" x="338" y="562" id="pf16005294905664" referenceLink="//@navigationRule.0/@navigationCase.1/@toViewId|" inlinks="pf16005294905663" path="/publico/login.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="privado/home.xhtml" x="338" y="946" id="pf16015191980472" referenceLink="//@navigationRule.0/@navigationCase.2/@toViewId|" inlinks="pf16015191980470" path="/privado/home.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="privado/anuncio.xhtml" id="pf16015191980473" referenceLink="//@navigationRule.0/@navigationCase.3/@toViewId|" inlinks="pf16015191980471" path="/privado/anuncio.xhtml"/>
-  <links id="pf16005243737211" target="pf16005243737212" source="pf16005243737210" outcome="cadastro"/>
-  <links id="pf16005294905663" target="pf16005294905664" source="pf16005243737210" outcome="login"/>
-  <links id="pf16015191980470" target="pf16015191980472" source="pf16005243737210" outcome="home"/>
-  <links id="pf16015191980471" target="pf16015191980473" source="pf16005243737210" outcome="anuncio"/>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf16018445622550" configfile="/FacilLeilao/WebContent/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="*" x="122" y="754" id="pf16018445863741" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf16018445863742 pf16018445863743 pf16018445863744 pf16018445863745 pf160184460994410" path="*"/>
+  <nodes xsi:type="pageflow:PFPage" name="publico/cadastro.xhtml" x="338" y="178" id="pf16018445863746" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf16018445863742" path="/publico/cadastro.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="publico/login.xhtml" x="338" y="562" id="pf16018445863747" referenceLink="//@navigationRule.0/@navigationCase.1/@toViewId|" inlinks="pf16018445863743" path="/publico/login.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="privado/home.xhtml" x="338" y="946" id="pf16018445863748" referenceLink="//@navigationRule.0/@navigationCase.2/@toViewId|" inlinks="pf16018445863744" path="/privado/home.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="privado/anuncio.xhtml" x="338" y="1330" id="pf16018445863749" referenceLink="//@navigationRule.0/@navigationCase.3/@toViewId|" inlinks="pf16018445863745" path="/privado/anuncio.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="privado/leiloesvencidos.xhtml" id="pf160184460994511" referenceLink="//@navigationRule.0/@navigationCase.4/@toViewId|" inlinks="pf160184460994410" path="/privado/leiloesvencidos.xhtml"/>
+  <links id="pf16018445863742" target="pf16018445863746" source="pf16018445863741" outcome="cadastro"/>
+  <links id="pf16018445863743" target="pf16018445863747" source="pf16018445863741" outcome="login"/>
+  <links id="pf16018445863744" target="pf16018445863748" source="pf16018445863741" outcome="home"/>
+  <links id="pf16018445863745" target="pf16018445863749" source="pf16018445863741" outcome="anuncio"/>
+  <links id="pf160184460994410" target="pf160184460994511" source="pf16018445863741" outcome="LeilõesVencidos"/>
 </pageflow:Pageflow>

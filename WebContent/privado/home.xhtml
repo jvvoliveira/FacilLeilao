@@ -22,9 +22,18 @@
 			<p:menuitem value="Leilões" icon="pi pi-search">
 				<f:param name="i" value="0" />
 			</p:menuitem>
-			<p:menuitem value="Seus anúncios" outcome="/privado/anuncio.xhtml" icon="pi pi-star">
+			<p:menuitem value="Seus anúncios" outcome="/privado/anuncio.xhtml"
+				icon="pi pi-star">
 				<f:param name="i" value="1" />
 			</p:menuitem>
+
+			<p:menuitem value="Leilões vencidos" icon="pi pi-star"
+				outcome="/privado/leiloesvencidos.xhtml">
+				<f:param name="i" value="2" />
+			</p:menuitem>
+			<!-- outcome -->
+
+
 			<p:menuitem value="#{leilaoBean.usuario.nome}">
 			</p:menuitem>
 		</p:tabMenu>
@@ -52,7 +61,8 @@
 				<h:panelGrid columns="1" style="width:100%">
 					<!-- <p:graphicImage name="demo/images/car/#{car.brand}.gif" /> -->
 
-					<h:outputText value="lance: R$#{leilaoBean.getMaiorLance(anuncio).getValor()}" />
+					<h:outputText
+						value="lance: R$#{leilaoBean.getMaiorLance(anuncio).getValor()}" />
 					<br />
 					<h:outputText value="#{anuncio.prazo}" />
 
@@ -91,9 +101,10 @@
 					<h:outputText value="#{leilaoBean.anuncioSelecionado.prazo}" />
 
 					<h:outputText value="Lance atual:" />
-					<h:outputText value="#{leilaoBean.getMaiorLance(leilaoBean.anuncioSelecionado).getValor()} ( #{leilaoBean.getMaiorLance(leilaoBean.anuncioSelecionado).getUsuario().getNome()} )" />
+					<h:outputText
+						value="#{leilaoBean.getMaiorLance(leilaoBean.anuncioSelecionado).getValor()} ( #{leilaoBean.getMaiorLance(leilaoBean.anuncioSelecionado).getUsuario().getNome()} )" />
 
-					<f:facet name="footer" >
+					<f:facet name="footer">
 						<h:outputText value="Dar lance: " />
 						<p:commandButton value="+5%" update="@form"
 							action="#{leilaoBean.darLance(leilaoBean.maiorLanceAnuncioSelecionado.getValor() * 1.05)}" />
@@ -108,7 +119,7 @@
 					</f:facet>
 				</p:panelGrid>
 			</p:outputPanel>
-			<p:growl id="growl" life="5000"/>  
+			<p:growl id="growl" life="5000" />
 		</p:dialog>
 
 	</h:form>

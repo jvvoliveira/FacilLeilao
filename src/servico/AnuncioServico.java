@@ -34,4 +34,10 @@ public class AnuncioServico {
 		query.setParameter("categoria", categoria);
 		return query.getResultList();
 	}
+	
+	public List<Anuncio> getAnunciosByUsuario(Long UsuarioId) {
+		TypedQuery<Anuncio> query = (TypedQuery<Anuncio>) entityManager.createNamedQuery(Anuncio.FIND_BY_USUARIO);
+		query.setParameter("usuarioid", UsuarioId);
+		return query.getResultList();
+	}
 }
