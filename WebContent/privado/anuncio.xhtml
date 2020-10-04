@@ -1,54 +1,110 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions">
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>leilao facil</title>
+	<title>Leilão fácil</title>
 </h:head>
 <h:body>
+
+	<script type="text/javascript">
+		PrimeFaces.locales['pt_BR'] = {
+			closeText : 'Fechar',
+			prevText : 'Anterior',
+			nextText : 'Próximo',
+			monthNames : [ 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio',
+					'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro',
+					'Novembro', 'Dezembro' ],
+			monthNamesShort : [ 'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
+					'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez' ],
+			dayNames : [ 'Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta',
+					'Sexta', 'Sábado' ],
+			dayNamesShort : [ 'Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb' ],
+			dayNamesMin : [ 'D', 'S', 'T', 'Q', 'Q', 'S', 'S' ],
+			weekHeader : 'Semana',
+			weekNumberTitle : 'Sm',
+			firstDay : 0,
+			isRTL : false,
+			showMonthAfterYear : false,
+			yearSuffix : '',
+			timeOnlyTitle : 'Somente Horas',
+			timeText : 'Tempo',
+			hourText : 'Hora',
+			minuteText : 'Minuto',
+			secondText : 'Segundo',
+			currentText : 'Começo',
+			ampm : false,
+			month : 'Mês',
+			week : 'Semana',
+			day : 'Dia',
+			allDayText : 'Todo o dia',
+			today : 'Hoje',
+			clear : 'Limpar'
+		}};
+	</script>
+
+	<script type="text/javascript">
+    //<![CDATA[
+    function dateTemplateFunc(date) {
+        return '<span style="background-color:' + ((date.day < 21 && date.day > 10) ? '#81C784' : 'inherit') + ';border-radius:50%;padding: .25em;width: 1.75em; height:1.75em; display:block;">' + date.day + '</span>';
+    }
+    //]]>
+	</script>
+
 	<h:form id="anuncioForm">
-	
-	<p:tabMenu activeIndex="1">
-			<p:menuitem value="Leilões" icon="pi pi-search" outcome="/privado/home.xhtml">
+		<p:messages id="messages" closable="true" />
+
+		<p:tabMenu activeIndex="1">
+			<p:menuitem value="Leilões" icon="pi pi-search"
+				outcome="/privado/home.xhtml">
 				<f:param name="i" value="0" />
 			</p:menuitem>
-			<p:menuitem value="Seus anúncios" icon="pi pi-star" >
+			<p:menuitem value="Seus anúncios" icon="pi pi-star">
 				<f:param name="i" value="1" />
 			</p:menuitem>
-			<p:menuitem value="Leilões vencidos" icon="pi pi-star" outcome="/privado/leiloesvencidos.xhtml">
+			<p:menuitem value="Leilões vencidos" icon="pi pi-star"
+				outcome="/privado/leiloesvencidos.xhtml">
 				<f:param name="i" value="2" />
 			</p:menuitem>
-			<!-- outcome -->
-
 			<p:menuitem value="#{leilaoBean.usuario.nome}">
 			</p:menuitem>
 		</p:tabMenu>
-		
-		<p:messages id="messages" closable="true"/>
+
 		<p:panel>
 			<p:panelGrid columns="2">
-			
+
 				<p:outputLabel for="nome" value="Titulo do anúncio:" />
-				<p:inputText id="nome" value="#{anuncioBean.anuncio.nome}" required="true"
-					label="nome" />
+				<p:inputText id="nome" value="#{anuncioBean.anuncio.nome}"
+					required="true" label="nome" />
 
 				<p:outputLabel for="descricao" value="Informe sua descricão:" />
-				<p:inputText id="descricao" value="#{anuncioBean.anuncio.descricao}" required="true"
-					label="descricao" />
+				<p:inputText id="descricao" value="#{anuncioBean.anuncio.descricao}"
+					required="true" label="descricao" />
 
 				<p:outputLabel for="valor_base" value="Informe o valor:" />
-				<p:inputMask id="valor_base" value="#{anuncioBean.anuncio.valor_base}" mask="#.##0,00" required="true"
-					 label="valor_base" />
+				<p:inputNumber id="valor_base"
+					value="#{anuncioBean.anuncio.valorBase}" symbol="R$ "
+					required="true" label="valor_base" />
 
 				<p:outputLabel for="prazo" value="Informe o prazo:" />
-				<p:password id="prazo" value="#{anuncioBean.anuncio.prazo}" required="true"
-					label="prazo" />
-					
+				<p:inputText id="prazo" value="#{anuncioBean.anuncio.prazo}"
+					required="true" label="prazo" />
+
+				<p:outputLabel value="Categoria: " />
+				<p:selectOneMenu filter="true"
+					value="#{anuncioBean.anuncio.categoria}" effect="fold"
+					converter="omnifaces.SelectItemsConverter">
+					<f:selectItem itemLabel="- Categoria -" noSelectionOption="true" />
+					<f:selectItems value="#{anuncioBean.categorias}" var="ctg"
+						itemValue="#{ctg}" itemLabel="#{ctg.nome}" />
+				</p:selectOneMenu>
+
 			</p:panelGrid>
 			<p:commandButton value="Criar Anúncio" ajax="false"
 				action="#{anuncioBean.salvar()}" />
-				
+
 		</p:panel>
 	</h:form>
 </h:body>

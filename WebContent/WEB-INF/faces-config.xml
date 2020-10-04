@@ -33,9 +33,16 @@
             <from-outcome>home</from-outcome>
             <to-view-id>/privado/home.xhtml</to-view-id>
         </navigation-case> 
+        
+        <navigation-case>
+            <from-outcome>anuncio</from-outcome>
+            <to-view-id>/privado/anuncio.xhtml</to-view-id>
+        </navigation-case>
+
         <navigation-case>
             <from-outcome>LeilõesVencidos</from-outcome>
             <to-view-id>/privado/leiloesvencidos.xhtml</to-view-id>
-        </navigation-case> 
+        </navigation-case>
+         
     </navigation-rule>
 </faces-config>
