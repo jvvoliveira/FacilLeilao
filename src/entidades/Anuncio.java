@@ -26,7 +26,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "Anuncio.findAll", 
-				query = "SELECT a FROM Anuncio a WHERE a.finalizado = 'false'"),
+				query = "SELECT a FROM Anuncio a"),
 		@NamedQuery(name = "Anuncio.findByCategoria", 
 		query = "SELECT a FROM Anuncio a WHERE a.categoria.nome = :categoria"),
 		@NamedQuery(name = "Anuncio.findByUsuario", 
