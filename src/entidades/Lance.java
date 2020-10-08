@@ -23,7 +23,7 @@ import javax.validation.constraints.NotNull;
 @NamedQueries({ 
 	@NamedQuery(
 		name = "Lance.findLancesByAnuncio",
-		query = "SELECT l FROM Lance l WHERE l.anuncio.id = :idAnuncio")
+		query = "SELECT l FROM Lance l WHERE l.anuncio.id = :idAnuncio AND l.direto = 0")
 })
 @Table(name = "TB_LANCE")
 public class Lance implements Serializable{
@@ -42,7 +42,7 @@ public class Lance implements Serializable{
     
     @Column(name = "DIRETO")
     @NotNull(message = "O tipo de lance direto/indireto deve ser informado")
-    private int direto;
+    private boolean direto;
     
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ID_ANUNCIO", referencedColumnName = "ID")
@@ -80,13 +80,13 @@ public class Lance implements Serializable{
 
 
 
-	public int getDireto() {
+	public boolean getDireto() {
 		return direto;
 	}
 
 
 
-	public void setDireto(int direto) {
+	public void setDireto(boolean direto) {
 		this.direto = direto;
 	}
 
