@@ -89,7 +89,7 @@ public class LeilaoBean implements Serializable{
 		for(int i = 0; i < anuncios.size(); i++) {
 			Anuncio anuncio = anuncios.get(i);
 			LocalDateTime dateTime = LocalDateTime.parse(anuncios.get(i).getPrazo());
-			if(dateTime.isBefore(LocalDateTime.now())) {
+			if(dateTime.isBefore(LocalDateTime.now()) || anuncio.getFinalizado()) {
 				String textoPrazo = dateTime.toString().replace('-', '/');
 				textoPrazo = textoPrazo.replace('T', ' ');
 				anuncio.setPrazo(textoPrazo);
@@ -132,9 +132,17 @@ public class LeilaoBean implements Serializable{
 			List<Anuncio> anunciosVencidos = new ArrayList<Anuncio>();
 			List<Anuncio> anuncios = filtrarAnunciosFinalizados(anuncioServico.getAnunciosByUsuarioDeuLance(usuario.getId()));
 			for(int i = 0; i < anuncios.size(); i++) {
-				maiorLance = getMaiorLance(anuncios.get(i));
-				if(maiorLance.getUsuario().getId() == usuario.getId()) {
-					anunciosVencidos.add(anuncios.get(i));
+				if(anuncios.get(i).getFinalizado()) {
+					if(anuncios.get(i).getLanceDiretoVencedor().getUsuario().getId() == usuario.getId()) {
+						anunciosVencidos.add(anuncios.get(i));
+					}
+				}else {
+					maiorLance = getMaiorLance(anuncios.get(i));
+					if(maiorLance.getUsuario() != null) {
+						if(maiorLance.getUsuario().getId() == usuario.getId()) {
+							anunciosVencidos.add(anuncios.get(i));
+						}											
+					}
 				}
 			}
 			setLeiloesVencidos(anunciosVencidos);		
@@ -147,7 +155,7 @@ public class LeilaoBean implements Serializable{
 	public void darLance(float valor) {
 		FacesContext context = FacesContext.getCurrentInstance();
 		LocalDateTime dateTime = LocalDateTime.parse(this.anuncioSelecionado.getPrazo().replace('/', '-').replace(' ', 'T'));
-		if(dateTime.isBefore(LocalDateTime.now())) {
+		if(dateTime.isBefore(LocalDateTime.now()) && !this.anuncioSelecionado.getFinalizado()) {
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Leilão de "+this.anuncioSelecionado.getNome()+" já foi finalizado", null));
 		}else {
 			valor = Math.round(valor);

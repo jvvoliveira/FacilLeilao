@@ -109,6 +109,7 @@
 	</h:form>
 	
 	<h:form id="lancesForm">
+		<p:growl id="growl" life="5000" />
 		<p:commandButton value="Atualizar"
 				action="#{lanceBean.todosLancesDireto()}"
 				ajax="true" update=":lancesForm:lances" />
@@ -128,8 +129,8 @@
 						value="Valor da oferta: R$#{lance.valor}" />
 				</h:panelGrid>
 				<h:panelGrid columns="2" style="display: flex; justify-content: space-around">
-					<p:commandButton value="Aceitar"/>
-					<p:commandButton value="Recusar"/>
+					<p:commandButton value="Aceitar" update="lancesForm" action="#{lanceBean.aceitarLanceDireto(lance)}"/>
+					<p:commandButton value="Recusar" update="lancesForm" action="#{lanceBean.apagarLanceDireto(lance)}" />
 				</h:panelGrid>
 			</p:panel>
 		</p:dataGrid>

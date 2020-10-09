@@ -14,7 +14,7 @@ VALUES (2, 'darllan@email.com', 'Darllan', '(81)88888-8888', 1, 'fcea920f7412b5d
 INSERT INTO TB_GRUPO (email, nome) VALUES ('darllan@email.com', 'usr');
 
 INSERT INTO TB_ANUNCIO (id, descricao, finalizado, is_active, nome, prazo, valor_base, id_categoria, id_usuario) 
-VALUES (1, 'videogame usado por 2 anos inclui 2 controles e 5 jogos', 'false', 1, 'PS4', '2020-09-30T16:00:00', 1500, 1, 2);
+VALUES (1, 'videogame usado por 2 anos inclui 2 controles e 5 jogos', 0, 1, 'PS4', '2020-09-30T16:00:00', 1500, 1, 2);
 
 INSERT INTO TB_ANUNCIO (id, descricao, finalizado, is_active, nome, prazo, valor_base, id_categoria, id_usuario) 
 VALUES (2, 'guitarra stratocaster seminova modelo 2', 0, 1, 'guitarra', '2020-10-30T16:00:00', 800, 2, 2);

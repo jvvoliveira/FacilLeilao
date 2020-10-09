@@ -35,4 +35,17 @@ public class LanceServico {
 		return query.getResultList();
 	}
 	
+	public boolean excluirLance(long idLance) {
+		try {
+			TypedQuery<Lance> query = (TypedQuery<Lance>) entityManager.createNamedQuery(Lance.FIND_LANCE_BY_ID);
+			query.setParameter("idLance", idLance);
+			Lance lance = query.getSingleResult();
+			entityManager.remove(lance);
+			return true;
+		}catch(Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 }

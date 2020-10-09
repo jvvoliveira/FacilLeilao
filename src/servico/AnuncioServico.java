@@ -46,4 +46,14 @@ public class AnuncioServico {
 		query.setParameter("usuarioid", UsuarioId);
 		return query.getResultList();
 	}
+	
+	public boolean updateAnuncio(Anuncio anuncio) {
+		try {
+			entityManager.merge(anuncio);
+			return true;
+		}catch(Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }
