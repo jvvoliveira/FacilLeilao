@@ -104,18 +104,30 @@
 					<h:outputText
 						value="#{leilaoBean.getMaiorLance(leilaoBean.anuncioSelecionado).getValor()} ( #{leilaoBean.getMaiorLance(leilaoBean.anuncioSelecionado).getUsuario().getNome()} )" />
 
+					<h:outputText value="Lance direto:" />
+					<p:inputSwitch value="#{leilaoBean.lanceDireto}" valueChangeListener="#{leilaoBean.setLanceDireto(!leilaoBean.lanceDireto)}">
+						<p:ajax update="anuncioDetalhe" />
+					</p:inputSwitch>
+
 					<f:facet name="footer">
-						<h:outputText value="Dar lance: " />
-						<p:commandButton value="+5%" update="@form"
-							action="#{leilaoBean.darLance(leilaoBean.maiorLanceAnuncioSelecionado.getValor() * 1.05)}" />
-						<p:commandButton value="+10%" update="@form"
-							action="#{leilaoBean.darLance(leilaoBean.maiorLanceAnuncioSelecionado.getValor() * 1.10)}" />
-						<p:commandButton value="+15%" update="@form"
-							action="#{leilaoBean.darLance(leilaoBean.maiorLanceAnuncioSelecionado.getValor() * 1.15)}" />
-						<p:commandButton value="+20%" update="@form"
-							action="#{leilaoBean.darLance(leilaoBean.maiorLanceAnuncioSelecionado.getValor() * 1.20)}" />
-						<p:commandButton value="+25%" update="@form"
-							action="#{leilaoBean.darLance(leilaoBean.maiorLanceAnuncioSelecionado.getValor() * 1.25)}" />
+						<p:row rendered="#{!leilaoBean.lanceDireto}">
+							<h:outputText value="Dar lance: " />
+							<p:commandButton value="+2%" update="@form"
+								action="#{leilaoBean.darLance(leilaoBean.maiorLanceAnuncioSelecionado.getValor() * 1.02)}" />
+							<p:commandButton value="+5%" update="@form"
+								action="#{leilaoBean.darLance(leilaoBean.maiorLanceAnuncioSelecionado.getValor() * 1.05)}" />
+							<p:commandButton value="+7%" update="@form"
+								action="#{leilaoBean.darLance(leilaoBean.maiorLanceAnuncioSelecionado.getValor() * 1.07)}" />
+							<p:commandButton value="+10%" update="@form"
+								action="#{leilaoBean.darLance(leilaoBean.maiorLanceAnuncioSelecionado.getValor() * 1.10)}" />
+							<p:commandButton value="+12%" update="@form"
+								action="#{leilaoBean.darLance(leilaoBean.maiorLanceAnuncioSelecionado.getValor() * 1.12)}" />
+						</p:row>
+						<p:row rendered="#{leilaoBean.lanceDireto}">
+							<h:outputText value="Dar lance: " />
+							<p:inputNumber symbol="R$ " required="true" value="#{leilaoBean.valorLanceDireto}"/>
+							<p:commandButton value="Registrar" update="@form" action="#{leilaoBean.darLance(leilaoBean.valorLanceDireto)}"/>
+						</p:row>
 					</f:facet>
 				</p:panelGrid>
 			</p:outputPanel>

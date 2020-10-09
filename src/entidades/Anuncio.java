@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -25,23 +26,27 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @NamedQueries({
-		@NamedQuery(name = "Anuncio.findAll", 
-				query = "SELECT a FROM Anuncio a"),
+		@NamedQuery(name = "Anuncio.findAllOpen", 
+				query = "SELECT a FROM Anuncio a WHERE a.finalizado = false"),
 		@NamedQuery(name = "Anuncio.findByCategoria", 
-		query = "SELECT a FROM Anuncio a WHERE a.categoria.nome = :categoria"),
-		@NamedQuery(name = "Anuncio.findByUsuario", 
+		query = "SELECT a FROM Anuncio a WHERE a.categoria.nome = :categoria and a.finalizado = false"),
+		@NamedQuery(name = "Anuncio.findByUsuarioComprador", 
 		query = "SELECT a FROM Anuncio a INNER JOIN Lance l ON l.anuncio.id = a.id and l.usuario.id = :usuarioid "
-				+ "GROUP BY a.id")	
+				+ "GROUP BY a.id"),
+		@NamedQuery(name = "Anuncio.findByUsuarioVendedor", 
+		query = "SELECT a FROM Anuncio a WHERE a.usuario.id = :usuarioid")
 })
 @Table(name = "TB_ANUNCIO")
 public class Anuncio implements Serializable {
 	
 	@Transient
-    public static final String FIND_ALL_OPEN = "Anuncio.findAll";
+    public static final String FIND_ALL_OPEN = "Anuncio.findAllOpen";
 	@Transient
     public static final String FIND_BY_CATEGORIA = "Anuncio.findByCategoria";
 	@Transient
-    public static final String FIND_BY_USUARIO = "Anuncio.findByUsuario";
+    public static final String FIND_BY_USUARIO_COMPRADOR = "Anuncio.findByUsuarioComprador";
+	@Transient
+    public static final String FIND_BY_USUARIO_VENDEDOR = "Anuncio.findByUsuarioVendedor";
 	
 	@Id
 	@Column(name = "ID")
@@ -78,6 +83,9 @@ public class Anuncio implements Serializable {
 
 	@OneToMany(mappedBy = "anuncio", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Lance> lances;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	private Lance lanceDiretoVencedor;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID")
@@ -178,6 +186,16 @@ public class Anuncio implements Serializable {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+	
+	
+
+	public Lance getLanceDiretoVencedor() {
+		return lanceDiretoVencedor;
+	}
+
+	public void setLanceDiretoVencedor(Lance lanceDiretoVencedor) {
+		this.lanceDiretoVencedor = lanceDiretoVencedor;
 	}
 
 	@Override

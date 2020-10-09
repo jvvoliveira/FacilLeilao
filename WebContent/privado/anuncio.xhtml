@@ -107,5 +107,33 @@
 
 		</p:panel>
 	</h:form>
+	
+	<h:form id="lancesForm">
+		<p:growl id="growl" life="5000" />
+		<p:commandButton value="Atualizar"
+				action="#{lanceBean.todosLancesDireto()}"
+				ajax="true" update=":lancesForm:lances" />
+		<p:dataGrid var="lance" value="#{lanceBean.lancesDiretoRecebidos}"
+			columns="3" layout="grid" rows="12" paginator="true" id="lances"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="6,12,16">
+
+			<f:facet name="header">
+            	Lances direto recebidos
+        	</f:facet>
+
+			<p:panel header="#{lance.anuncio.nome}" style="text-align:center">
+				<h:panelGrid columns="1" style="width:100%">
+					<h:outputText value="Usuário: #{lance.usuario.nome}" />
+					<h:outputText
+						value="Valor da oferta: R$#{lance.valor}" />
+				</h:panelGrid>
+				<h:panelGrid columns="2" style="display: flex; justify-content: space-around">
+					<p:commandButton value="Aceitar" update="lancesForm" action="#{lanceBean.aceitarLanceDireto(lance)}"/>
+					<p:commandButton value="Recusar" update="lancesForm" action="#{lanceBean.apagarLanceDireto(lance)}" />
+				</h:panelGrid>
+			</p:panel>
+		</p:dataGrid>
+	</h:form>
 </h:body>
 </html>

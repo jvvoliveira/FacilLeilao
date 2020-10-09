@@ -42,6 +42,8 @@ public class LeilaoBean implements Serializable{
 	private List<Categoria> categorias;
 	
 	private Anuncio anuncioSelecionado;
+	private boolean lanceDireto;
+	private float valorLanceDireto;
 	private Lance maiorLanceAnuncioSelecionado;
 	
 	
@@ -56,6 +58,8 @@ public class LeilaoBean implements Serializable{
 		todosAnunciosDisponiveis();
 		setCategorias(categoriaServico.getCategorias());
 		filtrarLeiloesVencidos();
+		
+		this.lanceDireto = false;
     }
 	
 	public void todosAnunciosDisponiveis() {
@@ -85,7 +89,7 @@ public class LeilaoBean implements Serializable{
 		for(int i = 0; i < anuncios.size(); i++) {
 			Anuncio anuncio = anuncios.get(i);
 			LocalDateTime dateTime = LocalDateTime.parse(anuncios.get(i).getPrazo());
-			if(dateTime.isBefore(LocalDateTime.now())) {
+			if(dateTime.isBefore(LocalDateTime.now()) || anuncio.getFinalizado()) {
 				String textoPrazo = dateTime.toString().replace('-', '/');
 				textoPrazo = textoPrazo.replace('T', ' ');
 				anuncio.setPrazo(textoPrazo);
@@ -121,21 +125,34 @@ public class LeilaoBean implements Serializable{
 		}
 	}
 	
+	public Lance getLanceDiretoVencedor(Anuncio anuncio) {
+		if(anuncio.getFinalizado() && anuncio.getLanceDiretoVencedor() != null) {
+			return anuncio.getLanceDiretoVencedor();
+		}
+		return null;
+	}
+	
 	
 	public void filtrarLeiloesVencidos() {
 		Lance maiorLance = new Lance();
 		try {
-			List<Anuncio> anunciosVencidos = new ArrayList<Anuncio>();;
-			List<Anuncio> anuncios = filtrarAnunciosFinalizados(anuncioServico.getAnunciosByUsuario(usuario.getId()));
-			System.out.println("passou aqui");
+			List<Anuncio> anunciosVencidos = new ArrayList<Anuncio>();
+			List<Anuncio> anuncios = filtrarAnunciosFinalizados(anuncioServico.getAnunciosByUsuarioDeuLance(usuario.getId()));
 			for(int i = 0; i < anuncios.size(); i++) {
-				maiorLance = getMaiorLance(anuncios.get(i));
-				if(maiorLance.getUsuario().getId() == usuario.getId()) {
-					anunciosVencidos.add(anuncios.get(i));
-					System.out.println(anuncios.get(i));
+				if(anuncios.get(i).getFinalizado()) {
+					if(anuncios.get(i).getLanceDiretoVencedor().getUsuario().getId() == usuario.getId()) {
+						anunciosVencidos.add(anuncios.get(i));
+					}
+				}else {
+					maiorLance = getMaiorLance(anuncios.get(i));
+					if(maiorLance.getUsuario() != null) {
+						if(maiorLance.getUsuario().getId() == usuario.getId()) {
+							anunciosVencidos.add(anuncios.get(i));
+						}											
+					}
 				}
 			}
-			setLeiloesVencidos(anunciosVencidos);;			
+			setLeiloesVencidos(anunciosVencidos);		
 		}catch(Exception e) {
 			e.printStackTrace();
 			return;
@@ -145,7 +162,7 @@ public class LeilaoBean implements Serializable{
 	public void darLance(float valor) {
 		FacesContext context = FacesContext.getCurrentInstance();
 		LocalDateTime dateTime = LocalDateTime.parse(this.anuncioSelecionado.getPrazo().replace('/', '-').replace(' ', 'T'));
-		if(dateTime.isBefore(LocalDateTime.now())) {
+		if(dateTime.isBefore(LocalDateTime.now()) || this.anuncioSelecionado.getFinalizado()) {
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Leilão de "+this.anuncioSelecionado.getNome()+" já foi finalizado", null));
 		}else {
 			valor = Math.round(valor);
@@ -155,10 +172,14 @@ public class LeilaoBean implements Serializable{
 				lance.setAnuncio(this.anuncioSelecionado);
 				lance.setUsuario(this.usuario);
 				lance.setValor(valor);
-				lance.setDireto(0);
+				lance.setDireto(lanceDireto);
 				
 				lanceServico.salvarLance(lance);
-				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Lance de R$"+valor+" efetuado em "+this.anuncioSelecionado.getNome(), null));			
+				if(lanceDireto) {
+					context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Lance direto de R$"+valor+" efetuado em "+this.anuncioSelecionado.getNome()+" aguarde pela decisão do vendedor", null));								
+				}else {
+					context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Lance de R$"+valor+" efetuado em "+this.anuncioSelecionado.getNome(), null));								
+				}
 			}else {
 				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Seu lance não pode ser menor que o lance atual de R$"+maiorLance, null));
 			}			
@@ -219,5 +240,23 @@ public class LeilaoBean implements Serializable{
 	public void setCategorias(List<Categoria> categorias) {
 		this.categorias = categorias;
 	}
+
+	public boolean getLanceDireto() {
+		return lanceDireto;
+	}
+
+	public void setLanceDireto(boolean lanceDireto) {
+		this.lanceDireto = lanceDireto;
+	}
+
+	public float getValorLanceDireto() {
+		return valorLanceDireto;
+	}
+
+	public void setValorLanceDireto(float valorLanceDireto) {
+		this.valorLanceDireto = valorLanceDireto;
+	}
+	
+	
 	
 }
