@@ -1,5 +1,6 @@
 package beans;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +47,8 @@ public class LanceBean {
 		List<Lance> lancesDireto = new ArrayList<Lance>();
 		for (int index = 0; index < anunciosProprios.size(); index++) {
 			Anuncio anuncio = anunciosProprios.get(index);
-			if (anuncio.getLanceDiretoVencedor() == null) {
+			LocalDateTime dateTime = LocalDateTime.parse(anuncio.getPrazo());
+			if (anuncio.getLanceDiretoVencedor() == null && dateTime.isAfter(LocalDateTime.now())) {
 				List<Lance> lancesDiretoAnuncio = lanceServico.getLancesDiretoByAnuncio(anuncio.getId());
 				for (int i = 0; i < lancesDiretoAnuncio.size(); i++) {
 					lancesDireto.add(lancesDiretoAnuncio.get(i));
@@ -58,6 +60,11 @@ public class LanceBean {
 
 	public void aceitarLanceDireto(Lance lance) {
 		FacesContext context = FacesContext.getCurrentInstance();
+		LocalDateTime dateTime = LocalDateTime.parse(lance.getAnuncio().getPrazo().replace('/', '-').replace(' ', 'T'));
+		if(dateTime.isBefore(LocalDateTime.now()) || lance.getAnuncio().getFinalizado()) {
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Leilão de "+lance.getAnuncio().getNome()+" já foi finalizado", null));
+			return;
+		}
 
 		Anuncio anuncio = lance.getAnuncio();
 		anuncio.setLanceDiretoVencedor(lance);

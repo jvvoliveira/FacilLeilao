@@ -125,6 +125,13 @@ public class LeilaoBean implements Serializable{
 		}
 	}
 	
+	public Lance getLanceDiretoVencedor(Anuncio anuncio) {
+		if(anuncio.getFinalizado() && anuncio.getLanceDiretoVencedor() != null) {
+			return anuncio.getLanceDiretoVencedor();
+		}
+		return null;
+	}
+	
 	
 	public void filtrarLeiloesVencidos() {
 		Lance maiorLance = new Lance();
@@ -155,7 +162,7 @@ public class LeilaoBean implements Serializable{
 	public void darLance(float valor) {
 		FacesContext context = FacesContext.getCurrentInstance();
 		LocalDateTime dateTime = LocalDateTime.parse(this.anuncioSelecionado.getPrazo().replace('/', '-').replace(' ', 'T'));
-		if(dateTime.isBefore(LocalDateTime.now()) && !this.anuncioSelecionado.getFinalizado()) {
+		if(dateTime.isBefore(LocalDateTime.now()) || this.anuncioSelecionado.getFinalizado()) {
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Leilão de "+this.anuncioSelecionado.getNome()+" já foi finalizado", null));
 		}else {
 			valor = Math.round(valor);

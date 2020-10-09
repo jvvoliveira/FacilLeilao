@@ -62,7 +62,8 @@
 
 					<h:outputText value="Telefone do vendedor: #{anuncio.usuario.telefone}" />
 
-					<h:outputText value="Valor do lance: #{leilaoBean.getMaiorLance(anuncio).getValor()}" />
+					<h:outputText rendered="#{!anuncio.finalizado}" value="Valor do lance: #{leilaoBean.getMaiorLance(anuncio).getValor()}" />
+					<h:outputText rendered="#{anuncio.finalizado}" value="Valor do lance: #{leilaoBean.getLanceDiretoVencedor(anuncio).getValor()}" />
 
 				</h:panelGrid>
 			</p:panel>
