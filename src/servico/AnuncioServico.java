@@ -35,8 +35,14 @@ public class AnuncioServico {
 		return query.getResultList();
 	}
 	
-	public List<Anuncio> getAnunciosByUsuario(Long UsuarioId) {
-		TypedQuery<Anuncio> query = (TypedQuery<Anuncio>) entityManager.createNamedQuery(Anuncio.FIND_BY_USUARIO);
+	public List<Anuncio> getAnunciosByUsuarioDeuLance(Long UsuarioId) {
+		TypedQuery<Anuncio> query = (TypedQuery<Anuncio>) entityManager.createNamedQuery(Anuncio.FIND_BY_USUARIO_COMPRADOR);
+		query.setParameter("usuarioid", UsuarioId);
+		return query.getResultList();
+	}
+	
+	public List<Anuncio> getAnunciosByUsuarioVendedor(Long UsuarioId) {
+		TypedQuery<Anuncio> query = (TypedQuery<Anuncio>) entityManager.createNamedQuery(Anuncio.FIND_BY_USUARIO_VENDEDOR);
 		query.setParameter("usuarioid", UsuarioId);
 		return query.getResultList();
 	}

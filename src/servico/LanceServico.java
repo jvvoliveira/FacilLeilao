@@ -29,4 +29,10 @@ public class LanceServico {
 		return query.getResultList();
 	}
 	
+	public List<Lance> getLancesDiretoByAnuncio(float idAnuncio) {
+		TypedQuery<Lance> query = (TypedQuery<Lance>) entityManager.createNamedQuery(Lance.FIND_LANCE_DIRETO_BY_ANUNCIO);
+		query.setParameter("idAnuncio", idAnuncio);
+		return query.getResultList();
+	}
+	
 }

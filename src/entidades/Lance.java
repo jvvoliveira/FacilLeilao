@@ -23,13 +23,18 @@ import javax.validation.constraints.NotNull;
 @NamedQueries({ 
 	@NamedQuery(
 		name = "Lance.findLancesByAnuncio",
-		query = "SELECT l FROM Lance l WHERE l.anuncio.id = :idAnuncio AND l.direto = 0")
+		query = "SELECT l FROM Lance l WHERE l.anuncio.id = :idAnuncio AND l.direto = 0"),
+	@NamedQuery(
+			name = "Lance.findLancesDiretoByAnuncio",
+			query = "SELECT l FROM Lance l WHERE l.anuncio.id = :idAnuncio AND l.direto = 1")
 })
 @Table(name = "TB_LANCE")
 public class Lance implements Serializable{
 	
 	@Transient
     public static final String FIND_LANCE_BY_ANUNCIO = "Lance.findLancesByAnuncio";
+	@Transient
+    public static final String FIND_LANCE_DIRETO_BY_ANUNCIO = "Lance.findLancesDiretoByAnuncio";
 	
 	@Id
 	@Column(name = "ID")

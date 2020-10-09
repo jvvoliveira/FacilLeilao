@@ -129,15 +129,15 @@ public class LeilaoBean implements Serializable{
 	public void filtrarLeiloesVencidos() {
 		Lance maiorLance = new Lance();
 		try {
-			List<Anuncio> anunciosVencidos = new ArrayList<Anuncio>();;
-			List<Anuncio> anuncios = filtrarAnunciosFinalizados(anuncioServico.getAnunciosByUsuario(usuario.getId()));
+			List<Anuncio> anunciosVencidos = new ArrayList<Anuncio>();
+			List<Anuncio> anuncios = filtrarAnunciosFinalizados(anuncioServico.getAnunciosByUsuarioDeuLance(usuario.getId()));
 			for(int i = 0; i < anuncios.size(); i++) {
 				maiorLance = getMaiorLance(anuncios.get(i));
 				if(maiorLance.getUsuario().getId() == usuario.getId()) {
 					anunciosVencidos.add(anuncios.get(i));
 				}
 			}
-			setLeiloesVencidos(anunciosVencidos);;			
+			setLeiloesVencidos(anunciosVencidos);		
 		}catch(Exception e) {
 			e.printStackTrace();
 			return;
