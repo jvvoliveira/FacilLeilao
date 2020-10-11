@@ -87,10 +87,14 @@
 				<p:inputNumber id="valor_base"
 					value="#{anuncioBean.anuncio.valorBase}" symbol="R$ "
 					required="true" label="valor_base" />
-
-				<p:outputLabel for="prazo" value="Informe o prazo:" />
-				<p:inputText id="prazo" value="#{anuncioBean.anuncio.prazo}"
-					required="true" label="prazo" />
+				
+				<p:outputLabel for="data" value="A data prazo:" />
+				<p:inputMask id="data" value="#{anuncioBean.data}"
+					required="true" label="data" mask="99-99-9999"/>
+				
+				<p:outputLabel for="hora" value="A hora prazo:" />
+				<p:inputMask id="hora" value="#{anuncioBean.hora}"
+					required="true" label="hora" mask="99:99"/>
 
 				<p:outputLabel value="Categoria: " />
 				<p:selectOneMenu filter="true"

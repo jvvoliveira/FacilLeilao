@@ -21,11 +21,15 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
 import org.eclipse.persistence.jpa.jpql.parser.DateTime;
+import org.omg.CORBA.Current;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+
+import java.time.LocalDate;
+import java.time.Month;
 
 @ManagedBean
 @SessionScoped
@@ -40,6 +44,11 @@ public class AnuncioBean implements Serializable {
 	private Anuncio anuncio;
 
 	private Usuario usuario;
+
+	private String data;
+	private String hora;
+
+	private Boolean dataValida, horaValida;
 
 	private List<Categoria> categorias;
 
@@ -60,21 +69,96 @@ public class AnuncioBean implements Serializable {
 		try {
 			this.anuncio.setUsuario(usuario);
 
-			this.anuncio.setFinalizado(false);
-			this.anuncio.setActive(true);
+			FormatarDataHora();
+			if (dataValida == true && horaValida == true) {
+				this.anuncio.setFinalizado(false);
+				this.anuncio.setActive(true);
 
-			anuncioServico.salvarAnuncio(this.anuncio);
+				anuncioServico.salvarAnuncio(this.anuncio);
 
-			context.addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_INFO, "Anúncio cadastrado com sucesso!", null));
+				context.addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO, "Anúncio cadastrado com sucesso!", null));
 
-			this.anuncio = new Anuncio();
+				this.anuncio = new Anuncio();
+				this.data = new String();
+				this.hora = new String();
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			context.addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro para cadastrar Anúncio!", null));
 		}
+	}
+
+	private void FormatarDataHora() {
+		String prazoFormatado;
+		prazoFormatado = ValidarData() + "T" + ValidarHora();
+		this.anuncio.setPrazo(prazoFormatado);
+	}
+
+	private String ValidarData() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		String dataFormatada;
+		int ano;
+		int mes;
+		int dia;
+		ano = Integer.parseInt(this.data.substring(6, 10));
+		mes = Integer.parseInt(this.data.substring(3, 5));
+		dia = Integer.parseInt(this.data.substring(0, 2));
+		LocalDate currentdate = LocalDate.now();
+		dataValida = true;
+		if (ano < currentdate.getYear()) {
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Ano inválido! Por favor cadastre uma data futura.", null));
+			dataValida = false;
+		} else if (mes < currentdate.getMonthValue() && ano == currentdate.getYear()) {
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Mês inválido! Por favor cadastre uma data futura.", null));
+			dataValida = false;
+		} else if (dia < currentdate.getDayOfMonth() && mes == currentdate.getMonthValue()) {
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Dia inválido! Por favor cadastre uma data futura.", null));
+			dataValida = false;
+		} else if (ano + currentdate.getYear() > 2 * currentdate.getYear() + 1) {
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Anúncios não podem se estender por tanto tempo assim.", null));
+			dataValida = false;
+		}
+		dataFormatada = String.valueOf(ano) + "-" + String.valueOf(mes) + "-" + String.valueOf(dia);
+
+		return dataFormatada;
+	}
+
+	private String ValidarHora() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		Integer horaF;
+		Integer minutos;
+		String horaFormatada;
+		horaF = Integer.parseInt(this.hora.substring(0, 2));
+		minutos = Integer.parseInt(this.hora.substring(3, 5));
+		horaValida = true;
+		if (horaF > 24 || horaF < 0) {
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Hora inválida! Por favor cadastre uma hora no sistema horário de 24 horas.", null));
+			horaValida = false;
+		} else if (minutos > 60 || minutos < 0) {
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Minutos inválido! Por favor cadastre os minutos até 59.", null));
+			horaValida = false;
+		} else if (horaF == 24 && minutos > 0) {
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Por favor cadastre uma hora no sistema horário de 24 horas.", null));
+			horaValida = false;
+		}
+		// Formatar a hora para formato 00:00:00 para não ficar 00:0:00
+		String aux = new String();
+		if (minutos == 0) {
+			aux = "00";
+		}
+
+		horaFormatada = String.valueOf(horaF) + ":" + aux + ":00";
+		return horaFormatada;
 	}
 
 	public Anuncio getAnuncio() {
@@ -95,6 +179,22 @@ public class AnuncioBean implements Serializable {
 
 	public void setCategorias(List<Categoria> categorias) {
 		this.categorias = categorias;
+	}
+
+	public String getData() {
+		return data;
+	}
+
+	public void setData(String data) {
+		this.data = data;
+	}
+
+	public String getHora() {
+		return hora;
+	}
+
+	public void setHora(String hora) {
+		this.hora = hora;
 	}
 
 }
