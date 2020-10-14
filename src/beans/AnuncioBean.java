@@ -152,9 +152,9 @@ public class AnuncioBean implements Serializable {
 			horaValida = false;
 		}
 		// Formatar a hora para formato 00:00:00 para não ficar 00:0:00
-		String aux = new String();
-		if (minutos == 0) {
-			aux = "00";
+		String aux = String.valueOf(minutos);
+		if (minutos < 10) {
+			aux = "0"+aux;
 		}
 
 		horaFormatada = String.valueOf(horaF) + ":" + aux + ":00";
