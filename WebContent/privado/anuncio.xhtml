@@ -54,7 +54,7 @@
 	</script>
 
 	<h:form id="anuncioForm">
-		<p:messages id="messages" closable="true" />
+		<!-- <p:messages id="messages" closable="true" /> -->
 
 		<p:tabMenu activeIndex="1">
 			<p:menuitem value="Leilões" icon="pi pi-search"
@@ -104,7 +104,7 @@
 				<p:outputLabel value="Categoria: " />
 				<p:selectOneMenu filter="true"
 					value="#{anuncioBean.anuncio.categoria}" effect="fold"
-					converter="omnifaces.SelectItemsConverter">
+					converter="omnifaces.SelectItemsConverter" required="true">
 					<f:selectItem itemLabel="- Categoria -" noSelectionOption="true" />
 					<f:selectItems value="#{anuncioBean.categorias}" var="ctg"
 						itemValue="#{ctg}" itemLabel="#{ctg.nome}" />

@@ -62,7 +62,9 @@
 					<!-- <p:graphicImage name="demo/images/car/#{car.brand}.gif" /> -->
 
 					<h:outputText
-						value="lance: R$#{leilaoBean.getMaiorLance(anuncio).getValor()}" />
+						value="lance: R$#{leilaoBean.getMaiorLance(anuncio).getValor()}" rendered="#{leilaoBean.getMaiorLance(anuncio) != null}"/>
+						<h:outputText
+						value="Dê seu lance direto" rendered="#{leilaoBean.getMaiorLance(anuncio) == null}"/>
 					<br />
 					<h:outputText value="#{anuncio.prazo}" />
 
