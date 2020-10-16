@@ -83,10 +83,15 @@
 				<p:inputText id="descricao" value="#{anuncioBean.anuncio.descricao}"
 					required="true" label="descricao" />
 
+				<p:outputLabel for="anuncio_condicional" value="Não definir um preço inicial"/>
+				<p:selectBooleanCheckbox id="anuncio_condicional" value="#{anuncioBean.anuncioCondicional}" label="Leilão condicional">
+					<p:ajax update="valor_base"/>
+				</p:selectBooleanCheckbox>
+				
 				<p:outputLabel for="valor_base" value="Informe o valor:" />
 				<p:inputNumber id="valor_base"
 					value="#{anuncioBean.anuncio.valorBase}" symbol="R$ "
-					required="true" label="valor_base" />
+					required="#{!anuncioBean.anuncioCondicional}" label="valor_base" />	
 				
 				<p:outputLabel for="data" value="A data prazo:" />
 				<p:inputMask id="data" value="#{anuncioBean.data}"
