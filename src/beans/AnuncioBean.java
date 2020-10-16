@@ -49,6 +49,7 @@ public class AnuncioBean implements Serializable {
 	private String hora;
 
 	private Boolean dataValida, horaValida;
+	private boolean anuncioCondicional;
 
 	private List<Categoria> categorias;
 
@@ -61,7 +62,7 @@ public class AnuncioBean implements Serializable {
 		setCategorias(categoriaServico.getCategorias());
 
 		this.anuncio = new Anuncio();
-
+		this.anuncioCondicional = false;
 	}
 
 	public void salvar() {
@@ -73,6 +74,10 @@ public class AnuncioBean implements Serializable {
 			if (dataValida == true && horaValida == true) {
 				this.anuncio.setFinalizado(false);
 				this.anuncio.setActive(true);
+				
+				if(this.anuncioCondicional) {
+					this.anuncio.setValorBase(null);
+				}
 
 				anuncioServico.salvarAnuncio(this.anuncio);
 
@@ -156,8 +161,12 @@ public class AnuncioBean implements Serializable {
 		if (minutos < 10) {
 			aux = "0"+aux;
 		}
+		String horaAux = String.valueOf(horaF);
+		if (horaF < 10) {
+			horaAux = "0"+horaAux;
+		}
 
-		horaFormatada = String.valueOf(horaF) + ":" + aux + ":00";
+		horaFormatada = horaAux + ":" + aux + ":00";
 		return horaFormatada;
 	}
 
@@ -196,5 +205,15 @@ public class AnuncioBean implements Serializable {
 	public void setHora(String hora) {
 		this.hora = hora;
 	}
+
+	public boolean isAnuncioCondicional() {
+		return anuncioCondicional;
+	}
+
+	public void setAnuncioCondicional(boolean anuncioCondicional) {
+		this.anuncioCondicional = anuncioCondicional;
+	}
+	
+	
 
 }

@@ -62,8 +62,7 @@ public class Anuncio implements Serializable {
 	private String descricao;
 
 	@Column(name = "VALOR_BASE")
-	@NotNull
-	private float valorBase;
+	private Float valorBase;
 
 	@Column(name = "IS_ACTIVE")
 	@NotNull
@@ -94,7 +93,7 @@ public class Anuncio implements Serializable {
 	public Anuncio() {
 	}
 
-	public Anuncio(Long id, String nome, String descricao, float valorBase, boolean isActive, String prazo,
+	public Anuncio(Long id, String nome, String descricao, Float valorBase, boolean isActive, String prazo,
 			boolean finalizado) {
 		super();
 		this.id = id;
@@ -130,11 +129,11 @@ public class Anuncio implements Serializable {
 		this.descricao = descricao;
 	}
 
-	public float getValorBase() {
+	public Float getValorBase() {
 		return valorBase;
 	}
 
-	public void setValorBase(float valorBase) {
+	public void setValorBase(Float valorBase) {
 		this.valorBase = valorBase;
 	}
 

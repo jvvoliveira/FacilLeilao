@@ -109,7 +109,11 @@ public class LeilaoBean implements Serializable{
 		try {
 			List<Lance> lances = lanceServico.getLancesByAnuncio(anuncio.getId());
 			if(lances.isEmpty()) {
-				maiorLance.setValor(anuncio.getValorBase());
+				if(anuncio.getValorBase() != null) {
+					maiorLance.setValor(anuncio.getValorBase());					
+				}else {
+					return null;
+				}
 			}else {
 				for(int i = 0; i < lances.size(); i++) {
 					if(lances.get(i).getValor() > maiorValor) {
@@ -145,7 +149,7 @@ public class LeilaoBean implements Serializable{
 					}
 				}else {
 					maiorLance = getMaiorLance(anuncios.get(i));
-					if(maiorLance.getUsuario() != null) {
+					if(maiorLance != null && maiorLance.getUsuario() != null) {
 						if(maiorLance.getUsuario().getId() == usuario.getId()) {
 							anunciosVencidos.add(anuncios.get(i));
 						}											
@@ -166,23 +170,38 @@ public class LeilaoBean implements Serializable{
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Leilão de "+this.anuncioSelecionado.getNome()+" já foi finalizado", null));
 		}else {
 			valor = Math.round(valor);
-			float maiorLance = getMaiorLance(this.anuncioSelecionado).getValor();
-			if(valor > maiorLance) {
-				Lance lance = new Lance();
-				lance.setAnuncio(this.anuncioSelecionado);
-				lance.setUsuario(this.usuario);
-				lance.setValor(valor);
-				lance.setDireto(lanceDireto);
-				
-				lanceServico.salvarLance(lance);
-				if(lanceDireto) {
+			Lance maiorLance = getMaiorLance(this.anuncioSelecionado);
+			if(maiorLance == null) {
+				if(valor != 0) {
+					Lance lance = new Lance();
+					lance.setAnuncio(this.anuncioSelecionado);
+					lance.setUsuario(this.usuario);
+					lance.setValor(valor);
+					lance.setDireto(lanceDireto);
+					
+					lanceServico.salvarLance(lance);
 					context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Lance direto de R$"+valor+" efetuado em "+this.anuncioSelecionado.getNome()+" aguarde pela decisão do vendedor", null));								
 				}else {
-					context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Lance de R$"+valor+" efetuado em "+this.anuncioSelecionado.getNome(), null));								
+					context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Este tipo de anúncio só aceita lances de forma direta", null));
 				}
-			}else {
-				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Seu lance não pode ser menor que o lance atual de R$"+maiorLance, null));
-			}			
+			}else {				
+				if(valor > maiorLance.getValor()) {
+					Lance lance = new Lance();
+					lance.setAnuncio(this.anuncioSelecionado);
+					lance.setUsuario(this.usuario);
+					lance.setValor(valor);
+					lance.setDireto(lanceDireto);
+					
+					lanceServico.salvarLance(lance);
+					if(lanceDireto) {
+						context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Lance direto de R$"+valor+" efetuado em "+this.anuncioSelecionado.getNome()+" aguarde pela decisão do vendedor", null));								
+					}else {
+						context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Lance de R$"+valor+" efetuado em "+this.anuncioSelecionado.getNome(), null));								
+					}
+				}else {
+					context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Seu lance não pode ser menor que o lance atual de R$"+maiorLance.getValor(), null));
+				}			
+			}
 		}
 	}
 	
