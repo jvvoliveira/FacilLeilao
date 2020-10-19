@@ -9,50 +9,6 @@
 </h:head>
 <h:body>
 
-	<script type="text/javascript">
-		PrimeFaces.locales['pt_BR'] = {
-			closeText : 'Fechar',
-			prevText : 'Anterior',
-			nextText : 'Próximo',
-			monthNames : [ 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio',
-					'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro',
-					'Novembro', 'Dezembro' ],
-			monthNamesShort : [ 'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
-					'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez' ],
-			dayNames : [ 'Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta',
-					'Sexta', 'Sábado' ],
-			dayNamesShort : [ 'Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb' ],
-			dayNamesMin : [ 'D', 'S', 'T', 'Q', 'Q', 'S', 'S' ],
-			weekHeader : 'Semana',
-			weekNumberTitle : 'Sm',
-			firstDay : 0,
-			isRTL : false,
-			showMonthAfterYear : false,
-			yearSuffix : '',
-			timeOnlyTitle : 'Somente Horas',
-			timeText : 'Tempo',
-			hourText : 'Hora',
-			minuteText : 'Minuto',
-			secondText : 'Segundo',
-			currentText : 'Começo',
-			ampm : false,
-			month : 'Mês',
-			week : 'Semana',
-			day : 'Dia',
-			allDayText : 'Todo o dia',
-			today : 'Hoje',
-			clear : 'Limpar'
-		}};
-	</script>
-
-	<script type="text/javascript">
-    //<![CDATA[
-    function dateTemplateFunc(date) {
-        return '<span style="background-color:' + ((date.day < 21 && date.day > 10) ? '#81C784' : 'inherit') + ';border-radius:50%;padding: .25em;width: 1.75em; height:1.75em; display:block;">' + date.day + '</span>';
-    }
-    //]]>
-	</script>
-
 	<h:form id="anuncioForm">
 		<!-- <p:messages id="messages" closable="true" /> -->
 
@@ -83,23 +39,26 @@
 				<p:inputText id="descricao" value="#{anuncioBean.anuncio.descricao}"
 					required="true" label="descricao" />
 
-				<p:outputLabel for="anuncio_condicional" value="Não definir um preço inicial"/>
-				<p:selectBooleanCheckbox id="anuncio_condicional" value="#{anuncioBean.anuncioCondicional}" label="Leilão condicional">
-					<p:ajax update="valor_base"/>
+				<p:outputLabel for="anuncio_condicional"
+					value="Não definir um preço inicial" />
+				<p:selectBooleanCheckbox id="anuncio_condicional"
+					value="#{anuncioBean.anuncioCondicional}"
+					label="Leilão condicional">
+					<p:ajax update="valor_base" />
 				</p:selectBooleanCheckbox>
-				
+
 				<p:outputLabel for="valor_base" value="Informe o valor:" />
 				<p:inputNumber id="valor_base"
 					value="#{anuncioBean.anuncio.valorBase}" symbol="R$ "
-					required="#{!anuncioBean.anuncioCondicional}" label="valor_base" />	
-				
+					required="#{!anuncioBean.anuncioCondicional}" label="valor_base" />
+
 				<p:outputLabel for="data" value="A data prazo:" />
-				<p:inputMask id="data" value="#{anuncioBean.data}"
-					required="true" label="data" mask="99-99-9999"/>
-				
+				<p:inputMask id="data" value="#{anuncioBean.data}" required="true"
+					label="data" mask="99-99-9999" />
+
 				<p:outputLabel for="hora" value="A hora prazo:" />
-				<p:inputMask id="hora" value="#{anuncioBean.hora}"
-					required="true" label="hora" mask="99:99"/>
+				<p:inputMask id="hora" value="#{anuncioBean.hora}" required="true"
+					label="hora" mask="99:99" />
 
 				<p:outputLabel value="Categoria: " />
 				<p:selectOneMenu filter="true"
@@ -116,33 +75,62 @@
 
 		</p:panel>
 	</h:form>
-	
-	<h:form id="lancesForm">
-		<p:growl id="growl" life="5000" />
-		<p:commandButton value="Atualizar"
-				action="#{lanceBean.todosLancesDireto()}"
-				ajax="true" update=":lancesForm:lances" />
-		<p:dataGrid var="lance" value="#{lanceBean.lancesDiretoRecebidos}"
-			columns="3" layout="grid" rows="12" paginator="true" id="lances"
-			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-			rowsPerPageTemplate="6,12,16">
 
-			<f:facet name="header">
+
+
+	<p:tabView id="tabView">
+		<p:tab title="Lances direto recebidos">
+
+			<h:form id="lancesForm">
+
+				<p:dataGrid var="lance" value="#{lanceBean.lancesDiretoRecebidos}"
+					columns="3" layout="grid" rows="12" paginator="true" id="lances"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="6,12,16">
+
+					<f:facet name="header">
             	Lances direto recebidos
         	</f:facet>
+					<p:panel header="#{lance.anuncio.nome}" style="text-align:center">
+						<h:panelGrid columns="1" style="width:100%">
+							<h:outputText value="Usuário: #{lance.usuario.nome}" />
+							<h:outputText value="Valor da oferta: R$#{lance.valor}" />
+						</h:panelGrid>
+						<h:panelGrid columns="2"
+							style="display: flex; justify-content: space-around">
+							<p:commandButton value="Aceitar" update="lancesForm"
+								action="#{lanceBean.aceitarLanceDireto(lance)}" />
+							<p:commandButton value="Recusar" update="lancesForm"
+								action="#{lanceBean.apagarLanceDireto(lance)}" />
+						</h:panelGrid>
+					</p:panel>
+				</p:dataGrid>
+			</h:form>
 
-			<p:panel header="#{lance.anuncio.nome}" style="text-align:center">
-				<h:panelGrid columns="1" style="width:100%">
-					<h:outputText value="Usuário: #{lance.usuario.nome}" />
-					<h:outputText
-						value="Valor da oferta: R$#{lance.valor}" />
-				</h:panelGrid>
-				<h:panelGrid columns="2" style="display: flex; justify-content: space-around">
-					<p:commandButton value="Aceitar" update="lancesForm" action="#{lanceBean.aceitarLanceDireto(lance)}"/>
-					<p:commandButton value="Recusar" update="lancesForm" action="#{lanceBean.apagarLanceDireto(lance)}" />
-				</h:panelGrid>
-			</p:panel>
-		</p:dataGrid>
-	</h:form>
+			<p:growl id="growl" life="5000" />
+			<p:commandButton value="Atualizar"
+				action="#{lanceBean.todosLancesDireto()}" ajax="true"
+				update=":tabView:lancesForm:lances" />
+
+
+		</p:tab>
+
+		<p:tab title="Meus Anúncios">
+			<p:dataGrid var="anuncio" value="#{leilaoBean.meusAnuncios}"
+				columns="3" layout="grid" rows="12" paginator="true" id="anuncios"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="6,12,16">
+
+				<f:facet name="header">
+            	Meus leilões
+        	</f:facet>
+				<p:panel header="#{anuncio.nome}" style="text-align:center">
+					<h:panelGrid columns="1" style="width:100%">
+						<h:outputText value="Descrição: #{anuncio.descricao}" />
+					</h:panelGrid>
+				</p:panel>
+			</p:dataGrid>
+		</p:tab>
+	</p:tabView>
 </h:body>
 </html>

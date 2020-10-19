@@ -39,6 +39,8 @@ public class LeilaoBean implements Serializable{
 	
 	private List<Anuncio> leiloesVencidos;
 	
+	private List<Anuncio> meusAnuncios;
+	
 	private List<Categoria> categorias;
 	
 	private Anuncio anuncioSelecionado;
@@ -58,9 +60,20 @@ public class LeilaoBean implements Serializable{
 		todosAnunciosDisponiveis();
 		setCategorias(categoriaServico.getCategorias());
 		filtrarLeiloesVencidos();
+		getMeusAnunciosVendedor();
 		
 		this.lanceDireto = false;
     }
+	
+	public void getMeusAnunciosVendedor() {
+		try {
+			List<Anuncio> meusAnuncios = new ArrayList<Anuncio>();
+			meusAnuncios = anuncioServico.getAnunciosByUsuarioVendedor(this.usuario.getId());
+			setMeusAnuncios(meusAnuncios);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public void todosAnunciosDisponiveis() {
 		filtrarAnunciosDisponiveis(anuncioServico.getAnuncios());
@@ -274,6 +287,14 @@ public class LeilaoBean implements Serializable{
 
 	public void setValorLanceDireto(float valorLanceDireto) {
 		this.valorLanceDireto = valorLanceDireto;
+	}
+
+	public List<Anuncio> getMeusAnuncios() {
+		return meusAnuncios;
+	}
+
+	public void setMeusAnuncios(List<Anuncio> meusAnuncios) {
+		this.meusAnuncios = meusAnuncios;
 	}
 	
 	
