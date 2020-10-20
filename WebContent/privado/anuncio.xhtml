@@ -30,7 +30,6 @@
 
 		<p:panel>
 			<p:panelGrid columns="2">
-
 				<p:outputLabel for="nome" value="Titulo do anúncio:" />
 				<p:inputText id="nome" value="#{anuncioBean.anuncio.nome}"
 					required="true" label="nome" />
@@ -111,8 +110,6 @@
 			<p:commandButton value="Atualizar"
 				action="#{lanceBean.todosLancesDireto()}" ajax="true"
 				update=":tabView:lancesForm:lances" />
-
-
 		</p:tab>
 
 		<p:tab title="Meus Anúncios">
@@ -127,9 +124,40 @@
 				<p:panel header="#{anuncio.nome}" style="text-align:center">
 					<h:panelGrid columns="1" style="width:100%">
 						<h:outputText value="Descrição: #{anuncio.descricao}" />
+						<h:outputText value="Descrição: #{anuncio.valorBase}" />
+						
+						<p:commandLink update=":form:anuncioDetalhe"
+						oncomplete="PF('anuncioDialog').show()">
+						<h:outputText value="Ver detalhes" style="margin:0 auto;" />
+						<f:setPropertyActionListener value="#{anuncio}"
+							target="#{leilaoBean.anuncioSelecionado}" />
+						</p:commandLink>
+					
 					</h:panelGrid>
 				</p:panel>
 			</p:dataGrid>
+				
+			<p:dialog header="Detalhes" widgetVar="anuncioDialog" modal="true"
+		showEffect="fade" hideEffect="fade" resizable="false">
+		<p:outputPanel id="anuncioDetalhe" style="text-align:center;">
+			<p:panelGrid columns="2"
+				rendered="#{not empty leilaoBean.anuncioSelecionado and lanceBean.lancesByAnuncio.isEmpty()}"
+				columnClasses="label,value">
+				<f:facet name="header">
+					<!-- <p:graphicImage
+									name="demo/images/car/#{dataGridView.selectedCar.brand}-big.gif" /> -->
+				</f:facet>
+				<h:form>
+					<h:outputText value="Novo valor : " />
+					<p:inputNumber id="valor_base"
+						value="#{anuncioBean.anuncio.valorBase}" symbol="R$ "
+						label="valor_base" />
+					<p:commandButton value="Salvar" action="#{anuncioBean.salvar()}" />
+				</h:form>
+			</p:panelGrid>
+		</p:outputPanel>
+		<p:growl id="growl" life="5000" />
+	</p:dialog>
 		</p:tab>
 	</p:tabView>
 </h:body>

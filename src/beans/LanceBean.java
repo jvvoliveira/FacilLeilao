@@ -27,7 +27,7 @@ public class LanceBean {
 
 	@EJB
 	private AnuncioServico anuncioServico;
-
+	private List<Lance> lancesByAnuncio; 
 	private List<Lance> lancesDiretoRecebidos;
 	private Lance lanceDiretoSelecionado;
 
@@ -40,6 +40,12 @@ public class LanceBean {
 		this.usuario = (Usuario) session.getAttribute("usuario");
 
 		todosLancesDireto();
+	}
+	
+	public List<Lance> getLancesByAnuncio(float idAnuncio){
+		lancesByAnuncio = lanceServico.getLancesByAnuncio(idAnuncio);
+		return lancesByAnuncio;
+		
 	}
 
 	public void todosLancesDireto() {

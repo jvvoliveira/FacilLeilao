@@ -42,9 +42,7 @@ public class AnuncioBean implements Serializable {
 	private CategoriaServico categoriaServico;
 
 	private Anuncio anuncio;
-
 	private Usuario usuario;
-
 	private String data;
 	private String hora;
 
@@ -171,7 +169,9 @@ public class AnuncioBean implements Serializable {
 	}
 
 	public Anuncio getAnuncio() {
+		
 		return anuncio;
+		
 	}
 
 	public void setAnuncio(Anuncio anuncio) {
