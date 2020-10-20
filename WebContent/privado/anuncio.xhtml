@@ -75,19 +75,16 @@
 
 		</p:panel>
 	</h:form>
-
-
-
+	
 	<p:tabView id="tabView">
 		<p:tab title="Lances direto recebidos">
 
-			<h:form id="lancesForm">
-
+			<h:form styleClass="lancesForm">
 				<p:dataGrid var="lance" value="#{lanceBean.lancesDiretoRecebidos}"
-					columns="3" layout="grid" rows="12" paginator="true" id="lances"
+					columns="3" layout="grid" rows="12" paginator="true"
+					styleClass="lancesDiretoGrid"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="6,12,16">
-
 					<f:facet name="header">
             	Lances direto recebidos
         	</f:facet>
@@ -98,26 +95,28 @@
 						</h:panelGrid>
 						<h:panelGrid columns="2"
 							style="display: flex; justify-content: space-around">
-							<p:commandButton value="Aceitar" update="lancesForm"
+							<p:commandButton value="Aceitar" update="@(.lancesForm)"
 								action="#{lanceBean.aceitarLanceDireto(lance)}" />
-							<p:commandButton value="Recusar" update="lancesForm"
+							<p:commandButton value="Recusar" update="@(.lancesForm)"
 								action="#{lanceBean.apagarLanceDireto(lance)}" />
 						</h:panelGrid>
 					</p:panel>
 				</p:dataGrid>
 			</h:form>
 
-			<p:growl id="growl" life="5000" />
-			<p:commandButton value="Atualizar"
-				action="#{lanceBean.todosLancesDireto()}" ajax="true"
-				update=":tabView:lancesForm:lances" />
-
+			<h:form>
+				<p:growl id="growl" life="5000" />
+				<p:commandButton value="Atualizar"
+					action="#{lanceBean.todosLancesDireto()}" ajax="true"
+					update="@(.lancesDiretoGrid)" />
+			</h:form>
 
 		</p:tab>
 
 		<p:tab title="Meus Anúncios">
 			<p:dataGrid var="anuncio" value="#{leilaoBean.meusAnuncios}"
-				columns="3" layout="grid" rows="12" paginator="true" id="anuncios"
+				columns="3" layout="grid" rows="12" paginator="true"
+				styleClass="meusAnunciosGrid"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 				rowsPerPageTemplate="6,12,16">
 
@@ -127,9 +126,19 @@
 				<p:panel header="#{anuncio.nome}" style="text-align:center">
 					<h:panelGrid columns="1" style="width:100%">
 						<h:outputText value="Descrição: #{anuncio.descricao}" />
+						<h:outputText value="Valor: #{anuncio.valor_base}" rendered="" />
+						<h:outputText value="Prazo: #{anuncio.prazo}" />
 					</h:panelGrid>
 				</p:panel>
 			</p:dataGrid>
+
+			<h:form id="meusAnunciosForm">
+				<p:growl id="growl" life="5000" />
+				<p:commandButton value="Atualizar"
+					action="#{leilaoBean.getMeusAnunciosVendedor()}" ajax="true"
+					update="@(.meusAnunciosGrid)" />
+			</h:form>
+
 		</p:tab>
 	</p:tabView>
 </h:body>
